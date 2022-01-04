@@ -13,4 +13,3 @@ import './bootstrap';
 
 // Twitter Bootstrap js
 require('bootstrap');
-
