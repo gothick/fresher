@@ -3,12 +3,11 @@
 {% block title %}Too Many Users{% endblock %}
 
 {% block body %}
+<div class="container">
     {% for flashError in app.flashes('too_many_users_error') %}
         <div class="alert alert-danger" role="alert">{{ flashError }}</div>
     {% endfor %}
-
     <h1>Too Many Users</h1>
-
-    Sorry. There are already enough registered users.
-
+    <p>Sorry. There are already enough registered users.</p>
+</div>
 {% endblock %}

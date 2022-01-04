@@ -1,5 +1,15 @@
+// https://bootswatch.com/help/
+// Sketchy theme. Choose another here: https://bootswatch.com
+@import "~bootswatch/dist/sketchy/variables";
 @import "~bootstrap/scss/bootstrap";
+@import "~bootswatch/dist/sketchy/bootswatch";
 
 body {
     background-color: lightgray;
+}
+
+.container {
+    background-color: antiquewhite;
+    padding-bottom: 12px;
+    padding-top: 20px;
 }
