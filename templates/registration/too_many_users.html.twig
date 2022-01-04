@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Too Many Users{% endblock %}
+
+{% block body %}
+    {% for flashError in app.flashes('too_many_users_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+
+    <h1>Too Many Users</h1>
+
+    Sorry. There are already enough registered users.
+
+{% endblock %}
