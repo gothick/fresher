@@ -97,5 +97,4 @@ class ThemeController extends AbstractController
             'form' => $form
         ]);
     }
-
 }

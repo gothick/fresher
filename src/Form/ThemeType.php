@@ -41,8 +41,7 @@ class ThemeType extends AbstractType
             ])
             ->add('create', SubmitType::class, [
                 'label' => $options['submit_label']
-            ])
-            ;
+            ]);
     }
     public function configureOptions(OptionsResolver $resolver): void
     {
