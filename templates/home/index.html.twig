@@ -1,17 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Fresher - Dashboard{% endblock %}
 
 {% block body %}
 <div class="container">
-    <a href="{{ path('app_logout') }}">logout</a>
+    <h1>Dashboard</h1>
+    <p>This will be where you can manage your over-arching themes</p>
 
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/Users/matt/Sites/mysites/fresher/src/Controller/HomeController.php'|file_link(0) }}">src/Controller/HomeController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/Users/matt/Sites/mysites/fresher/templates/home/index.html.twig'|file_link(0) }}">templates/home/index.html.twig</a></code></li>
-    </ul>
 </div>
 {% endblock %}
