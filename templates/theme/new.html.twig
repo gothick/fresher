@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('theme_new') }}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('theme_new') }}
+{% endblock %}
+
+{% block title %}Fresher - New Theme{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Create a New Theme</h1>
+    {{ form(form) }}
+</div>
+{% endblock %}

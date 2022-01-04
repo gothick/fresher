@@ -35,7 +35,7 @@ class RegistrationController extends AbstractController
         UserRepository $userRepository
     ): Response {
         if ($verifiedUserCount = $userRepository->getVerifiedUserCount() > 0) {
-            $this->addFlash('too_many_users_error', "Sorry, there are already {$verifiedUserCount} users.");
+            $this->addFlash('danger', "Sorry, there are already {$verifiedUserCount} users.");
             return $this->redirectToRoute('app_too_many_users');
         }
 

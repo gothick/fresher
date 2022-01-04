@@ -53,10 +53,10 @@ class UserController extends AbstractController
             $user->setPassword($password);
             $entityManager->flush();
             $this->addFlash(
-                'notice',
+                'success',
                 'Password changed!'
             );
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('dashboard');
         }
 
         return $this->render('user/change_password.html.twig', [

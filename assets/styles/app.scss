@@ -4,6 +4,10 @@
 @import "~bootstrap/scss/bootstrap";
 @import "~bootswatch/dist/sketchy/bootswatch";
 
+label.required:before {
+    content: "*";
+}
+
 /*
 body {
     background-color: lightgray;
