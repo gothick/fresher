@@ -4,6 +4,7 @@ framework:
 
         # Configure how to generate URLs in non-HTTP contexts, such as CLI commands.
         # See https://symfony.com/doc/current/routing.html#generating-urls-in-commands
+        # TODO: Configure for dev, test and live
         #default_uri: http://localhost
 
 when@prod:
