@@ -6,9 +6,12 @@ services:
     image: schickling/mailcatcher
     ports: [1025, 1080]
 ###< symfony/mailer ###
-
-###> doctrine/doctrine-bundle ###
+  # Moved this from doctrine/doctrine-bundle autoconfig because I wanted
+  # a host port, too.
   database:
     ports:
-      - "5432"
+      # Local 5014 chosen by https://www.random.org/integers/?num=1&min=5001&max=49151&col=5&base=10&format=html&rnd=new
+      - "5014:5432"
+
+###> doctrine/doctrine-bundle ###
 ###< doctrine/doctrine-bundle ###
