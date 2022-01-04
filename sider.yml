@@ -10,7 +10,6 @@ linter:
   phpmd:
     target:
       - src
-      - public/index.php
     # rule: codesize,unusedcode
     # minimumpriority: 3
     suffixes: php,phtml
