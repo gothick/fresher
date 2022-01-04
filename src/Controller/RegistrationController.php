@@ -28,12 +28,12 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/register", name="app_register")
      */
-    public function register(Request $request,
+    public function register(
+        Request $request,
         UserPasswordHasherInterface $userPasswordHasher,
         EntityManagerInterface $entityManager,
         UserRepository $userRepository
-    ): Response
-    {
+    ): Response {
         if ($verifiedUserCount = $userRepository->getVerifiedUserCount() > 0) {
             $this->addFlash('too_many_users_error', "Sorry, there are already {$verifiedUserCount} users.");
             return $this->redirectToRoute('app_too_many_users');
@@ -46,7 +46,7 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
             $user->setPassword(
-            $userPasswordHasher->hashPassword(
+                $userPasswordHasher->hashPassword(
                     $user,
                     $form->get('plainPassword')->getData()
                 )
@@ -56,7 +56,9 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
 
             // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+            $this->emailVerifier->sendEmailConfirmation(
+                'app_verify_email',
+                $user,
                 (new TemplatedEmail())
                     ->from(new Address('fresher@gothick.org.uk', 'Fresher Mailbot'))
                     ->to($user->getEmail())
@@ -76,7 +78,8 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/sorry", name="app_too_many_users")
      */
-    public function tooManyUsers() {
+    public function tooManyUsers()
+    {
         return $this->render('registration/too_many_users.html.twig');
     }
 
