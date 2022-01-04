@@ -9,18 +9,17 @@ linter:
 #   # https://help.sider.review/tools/php/phpmd
   phpmd:
     target:
-      - index.php
-      - wp-content
-    rule: codesize,unusedcode
-    minimumpriority: 3
+      - src
+      - public/index.php
+    # rule: codesize,unusedcode
+    # minimumpriority: 3
     suffixes: php,phtml
     exclude:
-      - app/Vendor/
       - migrations
     strict: true
     custom_rule_path:
-      - Custom_PHPMD_Rule.php
-      - custom/phpmd/rules/**/*.php
+      #- Custom_PHPMD_Rule.php
+      #- custom/phpmd/rules/**/*.php
 
   # https://help.sider.review/tools/javascript/eslint
   eslint:
