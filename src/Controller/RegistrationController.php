@@ -34,8 +34,10 @@ class RegistrationController extends AbstractController
         EntityManagerInterface $entityManager,
         UserRepository $userRepository
     ): Response {
-        if ($verifiedUserCount = $userRepository->getVerifiedUserCount() > 0) {
-            $this->addFlash('too_many_users_error', "Sorry, there are already {$verifiedUserCount} users.");
+
+        $verifiedUserCount = $userRepository->getVerifiedUserCount();
+        if ($verifiedUserCount > 0) {
+            $this->addFlash('danger', "Sorry, there are already {$verifiedUserCount} users.");
             return $this->redirectToRoute('app_too_many_users');
         }
 

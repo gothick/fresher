@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fresher - Dashboard{% endblock %}
+
+{% block body %}
+<div class="container">
+    {{ include('partials/_alert.html.twig') }}
+    <h1>Dashboard</h1>
+    <h2>Themes</h2>
+    {% for theme in themes %}
+    <div class="row mb-2">
+        <div class="col-2">
+            {{ theme.name }}
+        </div>
+        <div class="col-7">
+            {{ theme.description }}
+        </div>
+        <div class="col-2">
+            <small>Start date: {{ theme.startDate | date("F j, Y") }}</small><br/>
+            <small>End date: {{ theme.endDate | date("F j, Y") }}</small>
+        </div>
+        <div class="col-1">
+            <a href="{{ path('theme_edit', { 'id': theme.id }) }}">edit</a>
+        </div>
+    </div>
+    {% else %}
+    <p>No themes yet.</p>
+    {% endfor %}
+    <a href="{{ path('theme_new') }}" class="btn btn-primary">Add a theme.</a>
+</div>
+{% endblock %}
