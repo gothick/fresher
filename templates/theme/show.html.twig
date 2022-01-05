@@ -7,13 +7,12 @@
     <h2>{{ theme.name }}</h2>
     <p>{{ theme.description }}</p>
     <div class="details">
-        Start date: {{ theme.startDate | date("F j, Y") }}<br/>
-        End date: {{ theme.endDate | date("F j, Y") }}<br/>
+        Start date: {{ theme.startDate is empty ? "" : theme.startDate | date("F j, Y") }}<br/>
+        End date: {{ theme.endDate is empty ? "" : theme.endDate | date("F j, Y") }}<br/>
         <hr/>
         <small>Created: {{ theme.createdOn | date }} </small>
     </div>
     <a href="{{ path('theme_edit', { 'id': theme.id }) }}" class="btn btn-secondary mt-2">Edit Theme</a>
-
     <form
         method="POST"
         action="{{ path('theme_delete', { 'id': theme.id }) }}"
