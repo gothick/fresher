@@ -5,7 +5,7 @@
     {{ include('partials/_alert.html.twig') }}
     <h1>Theme Details</h1>
     <h2>{{ theme.name }}</h2>
-    <p>{{ theme.description }}</p>
+    <p>{{ theme.description | striptags | markdown }}</p>
     <div class="details">
         Start date: {{ theme.startDate is empty ? "" : theme.startDate | date("F j, Y") }}<br/>
         End date: {{ theme.endDate is empty ? "" : theme.endDate | date("F j, Y") }}<br/>
