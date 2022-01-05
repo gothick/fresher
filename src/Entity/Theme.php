@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\ThemeRepository;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -16,6 +18,7 @@ class Theme
     public function __construct()
     {
         $this->createdOn = new DateTime();
+        $this->goals = new ArrayCollection();
     }
 
     /**
@@ -80,6 +83,11 @@ class Theme
      * @ORM\Column(type="datetime")
      */
     private $createdOn;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Goal::class, mappedBy="theme", orphanRemoval=true)
+     */
+    private $goals;
 
     public function getId(): ?int
     {
@@ -154,6 +162,36 @@ class Theme
     public function setCreatedOn(\DateTimeInterface $createdOn): self
     {
         $this->createdOn = $createdOn;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Goal[]
+     */
+    public function getGoals(): Collection
+    {
+        return $this->goals;
+    }
+
+    public function addGoal(Goal $goal): self
+    {
+        if (!$this->goals->contains($goal)) {
+            $this->goals[] = $goal;
+            $goal->setTheme($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGoal(Goal $goal): self
+    {
+        if ($this->goals->removeElement($goal)) {
+            // set the owning side to null (unless already changed)
+            if ($goal->getTheme() === $this) {
+                $goal->setTheme(null);
+            }
+        }
 
         return $this;
     }
