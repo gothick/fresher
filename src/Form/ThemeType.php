@@ -22,6 +22,7 @@ class ThemeType extends AbstractType
             ->add('name', TextType::class)
             ->add('description', TextareaType::class, [
                 'required' => false,
+                'label' => 'Description (Markdown permitted)',
                 'attr' => [
                     'rows' => 10
                 ]
