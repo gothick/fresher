@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\GoalRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,6 +11,13 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Goal
 {
+    use ValidateStartEndDatesTrait;
+
+    public function __construct()
+    {
+        $this->setCreatedOn(new DateTime());
+    }
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -47,6 +55,11 @@ class Goal
      * @ORM\JoinColumn(nullable=false)
      */
     private $theme;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdOn;
 
     public function getId(): ?int
     {
@@ -121,6 +134,18 @@ class Goal
     public function setTheme(?Theme $theme): self
     {
         $this->theme = $theme;
+
+        return $this;
+    }
+
+    public function getCreatedOn(): ?\DateTimeInterface
+    {
+        return $this->createdOn;
+    }
+
+    public function setCreatedOn(\DateTimeInterface $createdOn): self
+    {
+        $this->createdOn = $createdOn;
 
         return $this;
     }
