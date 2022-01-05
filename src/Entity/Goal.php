@@ -2,23 +2,20 @@
 
 namespace App\Entity;
 
-use App\Repository\ThemeRepository;
+use App\Repository\GoalRepository;
 use DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=ThemeRepository::class)
+ * @ORM\Entity(repositoryClass=GoalRepository::class)
  */
-class Theme
+class Goal
 {
     use ValidateStartEndDatesTrait;
 
     public function __construct()
     {
-        $this->createdOn = new DateTime();
-        $this->goals = new ArrayCollection();
+        $this->setCreatedOn(new DateTime());
     }
 
     /**
@@ -39,10 +36,9 @@ class Theme
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="themes")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(type="text", nullable=true)
      */
-    private $owner;
+    private $reason;
 
     /**
      * @ORM\Column(type="date", nullable=true)
@@ -55,14 +51,15 @@ class Theme
     private $endDate;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Theme::class, inversedBy="goals")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $theme;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $createdOn;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Goal::class, mappedBy="theme", orphanRemoval=true)
-     */
-    private $goals;
 
     public function getId(): ?int
     {
@@ -93,14 +90,14 @@ class Theme
         return $this;
     }
 
-    public function getOwner(): ?User
+    public function getReason(): ?string
     {
-        return $this->owner;
+        return $this->reason;
     }
 
-    public function setOwner(?User $owner): self
+    public function setReason(?string $reason): self
     {
-        $this->owner = $owner;
+        $this->reason = $reason;
 
         return $this;
     }
@@ -129,6 +126,18 @@ class Theme
         return $this;
     }
 
+    public function getTheme(): ?Theme
+    {
+        return $this->theme;
+    }
+
+    public function setTheme(?Theme $theme): self
+    {
+        $this->theme = $theme;
+
+        return $this;
+    }
+
     public function getCreatedOn(): ?\DateTimeInterface
     {
         return $this->createdOn;
@@ -137,36 +146,6 @@ class Theme
     public function setCreatedOn(\DateTimeInterface $createdOn): self
     {
         $this->createdOn = $createdOn;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Goal[]
-     */
-    public function getGoals(): Collection
-    {
-        return $this->goals;
-    }
-
-    public function addGoal(Goal $goal): self
-    {
-        if (!$this->goals->contains($goal)) {
-            $this->goals[] = $goal;
-            $goal->setTheme($this);
-        }
-
-        return $this;
-    }
-
-    public function removeGoal(Goal $goal): self
-    {
-        if ($this->goals->removeElement($goal)) {
-            // set the owning side to null (unless already changed)
-            if ($goal->getTheme() === $this) {
-                $goal->setTheme(null);
-            }
-        }
 
         return $this;
     }
