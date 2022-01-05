@@ -97,4 +97,24 @@ class ThemeController extends AbstractController
             'form' => $form
         ]);
     }
+
+    /**
+     * @Route("/{id}/delete", name="delete", methods={"DELETE"})
+     */
+    public function delete(
+        Theme $theme,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response {
+        $submittedToken = (string) $request->request->get('token');
+        if ($this->isCsrfTokenValid('theme_delete', $submittedToken)) {
+            // TODO: The actual deletion
+            $entityManager->remove($theme);
+            $entityManager->flush();
+            $this->addFlash('success', "Theme deleted successfully.");
+            return $this->redirectToRoute('dashboard');
+        }
+        $this->addFlash('danger', "Theme could not be deleted.");
+        return $this->redirectToRoute('theme_show', [ 'id' => $theme->getId()]);
+    }
 }

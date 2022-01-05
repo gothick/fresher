@@ -3,16 +3,18 @@
     <div class="col-2 theme_name">
         <a href="{{ path('theme_show', { 'id': theme.id }) }}">{{ theme.name }}</a>
     </div>
-    <div class="col-7 theme_description">
+    <div class="col-8 theme_description">
         {{ theme.description }}
     </div>
     <div class="col-2 theme_details">
         <small>Start date: {{ theme.startDate | date("F j, Y") }}</small><br/>
         <small>End date: {{ theme.endDate | date("F j, Y") }}</small>
     </div>
+    {#
     <div class="col-1">
         <a href="{{ path('theme_edit', { 'id': theme.id }) }}">edit</a>
     </div>
+    #}
 </div>
 {% else %}
 <p>{{ no_themes_message ?? 'No themes yet' }}</p>
