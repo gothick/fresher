@@ -12,7 +12,9 @@
         <div class="col-9">
             {{ theme.description | striptags | markdown }}
             <h2>Goals</h2>
-            {{ include('partials/_goal_list.html.twig') }}
+            <div class="ms-4">
+                {{ include('partials/_goal_list.html.twig') }}
+            </div>
             <p><a href="{{ path('goal_new', { 'theme': theme.id }) }}" class="ps-2">Add a goal</a></p>
             <a href="{{ path('theme_edit', { 'id': theme.id }) }}" class="btn btn-secondary mt-2">Edit Theme</a>
         </div>

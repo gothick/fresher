@@ -1,8 +1,13 @@
 {% for goal in theme.goals %}
-<div class="row ps-2">
-    <div class="col">
+<div class="row">
+    <div class="col goal">
         <h3><a href="{{ path('goal_show', { 'theme': theme.id, 'goal': goal.id }) }}">{{ goal.name }}</a></h3>
-        {{ goal.description | striptags | markdown }}
+        <div class="description">
+            {{ goal.description | striptags | markdown }}
+        </div>
+        <div class="actions">
+            {{ include('partials/_action_list.html.twig', { 'actions': goal.actions }) }}
+        </div>
         <hr/>
     </div>
 </div>
