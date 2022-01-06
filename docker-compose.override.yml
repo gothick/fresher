@@ -1,11 +1,17 @@
 version: '3'
 
 services:
-###> symfony/mailer ###
   mailer:
     image: schickling/mailcatcher
-    ports: [1025, 1080]
+    ports:
+      # Expose the web port, and put it first so Docker desktop offers it
+      # as a clickable web link.
+      - "1080:1080" # Web admin interface
+      - "1025" # smtp
+
+###> symfony/mailer ###
 ###< symfony/mailer ###
+
   # Moved this from doctrine/doctrine-bundle autoconfig because I wanted
   # a host port, too.
   database:
