@@ -74,10 +74,9 @@ class ActionController extends AbstractController
             $entityManager->persist($action);
             $entityManager->flush();
             $this->addFlash('success', "New Action added.");
-            return $this->redirectToRoute('action_show', [
+            return $this->redirectToRoute('goal_show', [
                 'theme' => $theme->getId(),
-                'goal' => $goal->getId(),
-                'action' => $action->getId()
+                'goal' => $goal->getId()
             ]);
         }
 
@@ -110,10 +109,9 @@ class ActionController extends AbstractController
             $action = $form->getData();
             $entityManager->flush();
             $this->addFlash('success', "Action updated.");
-            return $this->redirectToRoute('action_show', [
+            return $this->redirectToRoute('goal_show', [
                 'theme' => $theme->getId(),
-                'goal' => $goal->getId(),
-                'action' => $action->getId()
+                'goal' => $goal->getId()
             ]);
         }
 

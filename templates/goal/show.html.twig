@@ -14,13 +14,20 @@
             <p><small>(Reason the goal applies to Theme <em>{{ theme.name }}</em>)</small></p>
             <p>{{ goal.reason}}</p>
             <h2><a href="{{ path("action", {'theme': theme.id, 'goal': goal.id }) }}">Actions</a></h2>
+            <p><small>
+                (Actions are any little thing you might be able to do <em>now</em> to move toward
+                this goal. This isn't a to-do list; keep things general rather than specific. Think
+                "get a little exercise?" rather than "10x pull ups". A random selection of these
+                choices will be sent to you as part of your reFresher schedule.)
+            </small></p>
             {{ include('partials/_action_list.html.twig', {actions: goal.actions }) }}
             <a href="{{ path('action_new', { 'theme': theme.id, 'goal': goal.id }) }}">Add an action</a>
         </div>
         <div class="col">
             Start: {{ goal.startDate is empty ? "<none>" | e : goal.startDate | date("F j, Y") }}<br/>
             End: {{ goal.endDate is empty ? "<none>" | e : goal.endDate | date("F j, Y") }}<br/>
-            Created On: {{ goal.endDate | date }}
+            <hr/>
+            <small>Created: {{ goal.endDate | date }}</small>
             <hr/>
             <form
                 method="POST"

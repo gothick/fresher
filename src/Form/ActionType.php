@@ -15,7 +15,7 @@ class ActionType extends AbstractType
     {
         $builder
             ->add('description', TextType::class, [
-                'label' => 'A simple action you could take right now to step closer to your Goal',
+                'label' => 'A simple action. This isn\'t a "to-do" list, so keep it general: "Clean something", "Go for a walk", so forth...',
             ])
             ->add('create', SubmitType::class, [
                 'label' => $options['submit_label']

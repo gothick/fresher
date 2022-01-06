@@ -6,7 +6,7 @@
             {{ goal.description | striptags | markdown }}
         </div>
         <div class="actions">
-            {{ include('partials/_action_list.html.twig', { 'actions': goal.actions }) }}
+            {{ include('partials/_action_list.html.twig', { 'actions': goal.actions, 'no_action_description': '(There are no actions for this goal yet)' }) }}
         </div>
         <hr/>
     </div>
