@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  mailer:
+    image: schickling/mailcatcher
+    ports:
+      - "1080:1080"
+      - "1025"
+
+  # Moved this from doctrine/doctrine-bundle autoconfig because I wanted
+  # a host port, too.
+  database:
+    ports:
+      # Local 5014 chosen by https://www.random.org/integers/?num=1&min=5001&max=49151&col=5&base=10&format=html&rnd=new
+      # - "5014:5432"
+      - "4306:3306"
+
+###> doctrine/doctrine-bundle ###
+###< doctrine/doctrine-bundle ###

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
@@ -19,7 +20,9 @@ final class Version20220103225549 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
+        // Version20220105235115 rolls this migration up along with others for MySQL; we only
+        // want to run this if we're on Postgres.
+        $this->skipIf(!($this->connection->getDatabasePlatform() instanceof PostgreSQLPlatform));
         $this->addSql('ALTER TABLE "user" ADD is_verified BOOLEAN NOT NULL');
     }
 

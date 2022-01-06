@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
@@ -19,7 +20,9 @@ final class Version20220105200434 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
+        // Version20220105235115 rolls this migration up along with others for MySQL; we only
+        // want to run this if we're on Postgres.
+        $this->skipIf(!($this->connection->getDatabasePlatform() instanceof PostgreSQLPlatform));
         $this->addSql('CREATE SEQUENCE goal_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE TABLE goal (id INT NOT NULL, theme_id INT NOT NULL, name VARCHAR(255) NOT NULL, description TEXT DEFAULT NULL, reason TEXT DEFAULT NULL, start_date DATE DEFAULT NULL, end_date DATE DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_FCDCEB2E59027487 ON goal (theme_id)');
