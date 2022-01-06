@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+{% block title %}Fresher - Action{% endblock %}
+
+{% block body %}
+<div class="container">
+    {{ include('partials/_alert.html.twig') }}
+    <h1>Viewing action for goal: <a href="{{ path('goal_show', { 'theme': theme.id, 'goal': goal.id }) }}">{{ goal.name }}</a></h1>
+    <p>{{ action.description }}</p>
+    <a href="{{ path('action_edit', { 'theme': theme.id, 'goal': goal.id, 'action': action.id }) }}" class="btn btn-secondary mt-2">Edit Action</a>
+    <form
+        method="POST"
+        action="{{ path('action_delete', { 'theme': theme.id, 'goal': goal.id, 'action': action.id }) }}"
+        onsubmit="return confirm('Are you sure you want to delete this action?');"
+        >
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="token" value="{{ csrf_token('action_delete') }}"/>
+        <button type="submit" name="btn_delete" class="btn btn-danger mt-4"><i class="fas fa-trash-alt" aria-hidden="true"></i> Delete Action</button>
+    </form>
+</div>
+{% endblock %}

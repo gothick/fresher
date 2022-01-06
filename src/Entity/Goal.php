@@ -4,7 +4,10 @@ namespace App\Entity;
 
 use App\Repository\GoalRepository;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=GoalRepository::class)
@@ -16,6 +19,7 @@ class Goal
     public function __construct()
     {
         $this->setCreatedOn(new DateTime());
+        $this->actions = new ArrayCollection();
     }
 
     /**
@@ -27,6 +31,11 @@ class Goal
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\Length(
+     *      max = 255,
+     *      maxMessage = "Name cannot be longer than {{ limit }} characters"
+     * )
      */
     private $name;
 
@@ -37,6 +46,10 @@ class Goal
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Assert\Length(
+     *      max = 255,
+     *      maxMessage = "Reason cannot be longer than {{ limit }} characters"
+     * )
      */
     private $reason;
 
@@ -60,6 +73,11 @@ class Goal
      * @ORM\Column(type="datetime")
      */
     private $createdOn;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Action::class, mappedBy="goal", orphanRemoval=true)
+     */
+    private $actions;
 
     public function getId(): ?int
     {
@@ -146,6 +164,36 @@ class Goal
     public function setCreatedOn(\DateTimeInterface $createdOn): self
     {
         $this->createdOn = $createdOn;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Action[]
+     */
+    public function getActions(): Collection
+    {
+        return $this->actions;
+    }
+
+    public function addAction(Action $action): self
+    {
+        if (!$this->actions->contains($action)) {
+            $this->actions[] = $action;
+            $action->setGoal($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAction(Action $action): self
+    {
+        if ($this->actions->removeElement($action)) {
+            // set the owning side to null (unless already changed)
+            if ($action->getGoal() === $this) {
+                $action->setGoal(null);
+            }
+        }
 
         return $this;
     }

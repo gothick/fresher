@@ -23,6 +23,10 @@ Encore
     .addEntry('app', './assets/app.js')
     .addEntry('theme_new', './assets/pages/theme_new.js')
     .addEntry('goal_new', './assets/pages/goal_new.js')
+    .addEntry('action_new', './assets/pages/action_new.js')
+    .addEntry('theme_edit', './assets/pages/theme_edit.js')
+    .addEntry('goal_edit', './assets/pages/goal_edit.js')
+    .addEntry('action_edit', './assets/pages/action_edit.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
