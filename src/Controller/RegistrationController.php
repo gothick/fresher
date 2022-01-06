@@ -7,8 +7,11 @@ use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
@@ -67,14 +70,20 @@ class RegistrationController extends AbstractController
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
-            // do anything else you need here, like send an email
-
-            return $this->redirectToRoute('dashboard');
+            return $this->redirectToRoute('app_register_awaiting_email');
         }
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/register/awaiting", name="app_register_awaiting_email", methods={"GET"})
+     */
+    public function awaitingEmail()
+    {
+        return $this->render('registration/register_awaiting_email.html.twig');
     }
 
     /**
@@ -107,7 +116,6 @@ class RegistrationController extends AbstractController
             $this->emailVerifier->handleEmailConfirmation($request, $user);
         } catch (VerifyEmailExceptionInterface $exception) {
             $this->addFlash('verify_email_error', $exception->getReason());
-
             return $this->redirectToRoute('app_register');
         }
 
@@ -115,5 +123,58 @@ class RegistrationController extends AbstractController
         $this->addFlash('success', 'Your email address has been verified.');
 
         return $this->redirectToRoute('app_register');
+    }
+    /**
+     * @Route("/verify/resend_email", name="app_verify_resend_email", methods={"GET", "POST"})
+     */
+    public function resendVerifyEmail(
+        Request $request,
+        UserRepository $userRepository
+    ): Response {
+
+        $form = $this->createFormBuilder()
+            ->add('email', TextType::class)
+            ->add('submit', SubmitType::class, ['label' => 'Re-send Verification Email'])
+            ->setMethod('POST')
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            if (!is_array($data)) {
+                throw new Exception("Expected data array from form");
+            }
+            if (!empty($data['email'])) {
+                $user = $userRepository->findOneBy(['email' => $data['email']]);
+                if ($user !== null) {
+                    if (!$user->isVerified()) {
+                        $this->emailVerifier->sendEmailConfirmation(
+                            'app_verify_email',
+                            $user,
+                            (new TemplatedEmail())
+                                ->from(new Address('fresher@gothick.org.uk', 'Fresher Mailbot'))
+                                ->to($user->getEmail())
+                                ->subject('Please Confirm your Email')
+                                ->htmlTemplate('registration/confirmation_email.html.twig')
+                        );
+                        return $this->redirectToRoute('app_register_awaiting_email');
+                    } else {
+                        // Exactly the same message as below so we don't leak information
+                        // on whether someone is a registered user or not. This is a public
+                        // page and someone could discover it and throw things at it to see
+                        // if people are registered if we do something different if they
+                        // are/aren't.
+                        $this->addFlash('danger', 'Sorry. Something went wrong.');
+                    }
+                } else {
+                    $this->addFlash('danger', 'Sorry. Something went wrong.');
+                }
+            }
+        }
+
+        return $this->renderForm('registration/register_resend_email.html.twig', [
+            'form' => $form
+        ]);
     }
 }
