@@ -12,7 +12,10 @@
             {{ goal.description | striptags | markdown }}
             <h2>Reason</h2>
             <p><small>(Reason the goal applies to Theme <em>{{ theme.name }}</em>)</small></p>
-            {{ goal.reason}}
+            <p>{{ goal.reason}}</p>
+            <h2><a href="{{ path("action", {'theme': theme.id, 'goal': goal.id }) }}">Actions</a></h2>
+            {{ include('partials/_action_list.html.twig', {actions: goal.actions }) }}
+            <a href="{{ path('action_new', { 'theme': theme.id, 'goal': goal.id }) }}">Add an action</a>
         </div>
         <div class="col">
             Start: {{ goal.startDate is empty ? "<none>" | e : goal.startDate | date("F j, Y") }}<br/>

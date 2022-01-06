@@ -22,7 +22,7 @@ final class Version20220105235115 extends AbstractMigration
     {
         // This is our first rolled-up MySQL migration to go along with all the previous
         // Postgres migrations.
-        $this->skipIf(!($this->connection->getDatabasePlatform() instanceof MySQLPlatform));
+        $this->skipIf(!($this->connection->getDatabasePlatform() instanceof MySQLPlatform), "Skipping for non-MySQL database");
 
         $this->addSql('CREATE TABLE goal (id INT AUTO_INCREMENT NOT NULL, theme_id INT NOT NULL, name VARCHAR(255) NOT NULL, description LONGTEXT DEFAULT NULL, reason LONGTEXT DEFAULT NULL, start_date DATE DEFAULT NULL, end_date DATE DEFAULT NULL, created_on DATETIME NOT NULL, INDEX IDX_FCDCEB2E59027487 (theme_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE theme (id INT AUTO_INCREMENT NOT NULL, owner_id INT NOT NULL, name VARCHAR(255) NOT NULL, description LONGTEXT DEFAULT NULL, start_date DATE DEFAULT NULL, end_date DATE DEFAULT NULL, created_on DATETIME NOT NULL, INDEX IDX_9775E7087E3C61F9 (owner_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');

@@ -1,0 +1,9 @@
+{% if actions | length > 0 %}
+    <ul class="actionlist">
+    {% for action in actions %}
+        <li><a href="{{ path('action_show', { 'theme': theme.id, 'goal': goal.id, 'action': action.id }) }}">{{ action.description }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>There are no actions yet.</p>
+{% endif %}

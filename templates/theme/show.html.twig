@@ -12,17 +12,7 @@
         <div class="col-9">
             {{ theme.description | striptags | markdown }}
             <h2>Goals</h2>
-            {% for goal in theme.goals %}
-            <div class="row ps-2">
-                <div class="col">
-                    <h3><a href="{{ path('goal_show', { 'theme': theme.id, 'goal': goal.id }) }}">{{ goal.name }}</a></h3>
-                    {{ goal.description | striptags | markdown }}
-                    <hr/>
-                </div>
-            </div>
-            {% else %}
-            <p>You haven't set any goals for this theme yet.</p>
-            {% endfor %}
+            {{ include('partials/_goal_list.html.twig') }}
             <p><a href="{{ path('goal_new', { 'theme': theme.id }) }}" class="ps-2">Add a goal</a></p>
             <a href="{{ path('theme_edit', { 'id': theme.id }) }}" class="btn btn-secondary mt-2">Edit Theme</a>
         </div>

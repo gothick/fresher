@@ -22,7 +22,7 @@ final class Version20220103224749 extends AbstractMigration
     {
         // Version20220105235115 rolls this migration up along with others for MySQL; we only
         // want to run this if we're on Postgres.
-        $this->skipIf(!($this->connection->getDatabasePlatform() instanceof PostgreSQLPlatform));
+        $this->skipIf(!($this->connection->getDatabasePlatform() instanceof PostgreSQLPlatform), "Skipping for non-Postgres database");
 
         $this->addSql('CREATE SEQUENCE "user_id_seq" INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE TABLE "user" (id INT NOT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, display_name VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id))');

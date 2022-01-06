@@ -22,7 +22,7 @@ final class Version20220104201001 extends AbstractMigration
     {
         // Version20220105235115 rolls this migration up along with others for MySQL; we only
         // want to run this if we're on Postgres.
-        $this->skipIf(!($this->connection->getDatabasePlatform() instanceof PostgreSQLPlatform));
+        $this->skipIf(!($this->connection->getDatabasePlatform() instanceof PostgreSQLPlatform), "Skipping for non-Postgres database");
         $this->addSql('CREATE SEQUENCE theme_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE TABLE theme (id INT NOT NULL, owner_id INT NOT NULL, name VARCHAR(255) NOT NULL, description TEXT DEFAULT NULL, start_date DATE DEFAULT NULL, end_date DATE DEFAULT NULL, created_on TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_9775E7087E3C61F9 ON theme (owner_id)');

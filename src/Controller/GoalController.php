@@ -18,9 +18,12 @@ class GoalController extends AbstractController
      */
     public function index(Theme $theme): Response
     {
+        // TODO: Security
+        $goals = $theme->getGoals();
+
         return $this->render('goal/index.html.twig', [
-            'controller_name' => 'GoalController',
-            'theme' => $theme
+            'theme' => $theme,
+            'goals' => $goals
         ]);
     }
 
@@ -57,7 +60,7 @@ class GoalController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $goal = $form->getData();
             $entityManager->flush();
-            $this->addFlash('success', "Goal successfully updated.");
+            $this->addFlash('success', "Goal updated.");
             return $this->redirectToRoute('goal_show', ['theme' => $theme->getId(), 'goal' => $goal->getId() ]);
         }
 
@@ -77,9 +80,10 @@ class GoalController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager
     ): Response {
+        // TODO: security
+
         $submittedToken = (string) $request->request->get('token');
         if ($this->isCsrfTokenValid('goal_delete', $submittedToken)) {
-            // TODO: The actual deletion
             $entityManager->remove($goal);
             $entityManager->flush();
             $this->addFlash('success', "Goal deleted successfully.");
