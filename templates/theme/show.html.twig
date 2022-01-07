@@ -19,30 +19,17 @@
             <a href="{{ path('theme_edit', { 'id': theme.id }) }}" class="btn btn-secondary mt-2">Edit Theme</a>
         </div>
         <div class="col">
-            <p>
-                Start: {{ theme.startDate is empty ? "" : theme.startDate | date("F j, Y") }}<br/>
-                End: {{ theme.endDate is empty ? "" : theme.endDate | date("F j, Y") }}<br/>
-                {% if theme.progress is not null %}
-                    {{ theme.progress | format_number(style='percent') }}
-                {% endif %}
-                <div class="bargraph mb-4" data-progress="{{ theme.progress }}">
-                    <div class="bar">
-                    {# Javascript will make a percentage bargraph here #}
-                    </div>
-                </div>
-                <hr/>
-                <small>Created: {{ theme.createdOn | date }} </small>
-                <hr/>
-                <form
-                    method="POST"
-                    action="{{ path('theme_delete', { 'id': theme.id }) }}"
-                    onsubmit="return confirm('Are you sure you want to delete this theme?');"
-                    >
-                    <input type="hidden" name="_method" value="DELETE">
-                    <input type="hidden" name="token" value="{{ csrf_token('theme_delete') }}"/>
-                    <button type="submit" name="btn_delete" class="btn btn-danger mt-4"><i class="fas fa-trash-alt" aria-hidden="true"></i> Delete Theme</button>
-                </form>
-            </p>
+            {{ include('partials/_theme_metadata.html.twig') }}
+            <hr/>
+            <form
+                method="POST"
+                action="{{ path('theme_delete', { 'id': theme.id }) }}"
+                onsubmit="return confirm('Are you sure you want to delete this theme?');"
+                >
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="hidden" name="token" value="{{ csrf_token('theme_delete') }}"/>
+                <button type="submit" name="btn_delete" class="btn btn-danger mt-4"><i class="fas fa-trash-alt" aria-hidden="true"></i> Delete Theme</button>
+            </form>
         </div>
     </div>
 </div>
