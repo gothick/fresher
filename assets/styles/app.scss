@@ -8,6 +8,29 @@ label.required:before {
     content: "*";
 }
 
+/* TODO: Tidy up these bargraph styles to proper SCSS */
+
+div.bargraph {
+    height: 10px;
+    border: 1px solid grey;
+    width: auto;
+}
+
+div.bargraph div.bar {
+    height: 100%;
+    width: 0%;
+    background-color: rgb(56, 175, 66);
+}
+
+div.bargraph div.bar.warn {
+    background-color: rgb(226, 223, 36);
+}
+
+div.bargraph div.bar.critical {
+    background-color: rgb(175, 56, 56);
+}
+
+
 /*
 body {
     background-color: lightgray;
