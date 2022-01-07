@@ -2,7 +2,7 @@
     <ul class="actionlist">
     {% for action in actions %}
         <li>
-            {{ action.description }}
+            {{ action.description | linkify }}
             <a href="{{ path('action_edit', { 'theme': theme.id, 'goal': goal.id, 'action': action.id }) }}">[edit]</a>
         </li>
     {% endfor %}
