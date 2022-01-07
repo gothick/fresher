@@ -1,20 +1,17 @@
 {% for theme in themes %}
 <div class="row mb-2">
-    <div class="col-2 theme_name">
-        <a href="{{ path('theme_show', { 'id': theme.id }) }}">{{ theme.name }}</a>
+    <div class="col theme_name">
+        <h3><a href="{{ path('theme_show', { 'id': theme.id }) }}">{{ theme.name }}</a></h3>
     </div>
-    <div class="col-8 theme_description">
+</div>
+<div class="row mb-2">
+    <div class="col-sm-9 theme_description">
         {{ theme.description | striptags | markdown }}
     </div>
-    <div class="col-2 theme_details">
-        <small>Start date: {{ theme.startDate is empty ? "" : theme.startDate | date("F j, Y") }}</small><br/>
-        <small>End date: {{ theme.endDate is empty ? "" : theme.endDate | date("F j, Y") }}</small>
+    <div class="col-sm-3">
+        {{ include('partials/_theme_metadata.html.twig') }}
     </div>
-    {#
-    <div class="col-1">
-        <a href="{{ path('theme_edit', { 'id': theme.id }) }}">edit</a>
-    </div>
-    #}
+    <hr />
 </div>
 {% else %}
 <p>{{ no_themes_message ?? 'No themes yet' }}</p>

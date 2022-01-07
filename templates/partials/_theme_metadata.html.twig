@@ -1,0 +1,14 @@
+<div class="theme-details">
+    Start: {{ theme.startDate is empty ? "" : theme.startDate | date("F j, Y") }}<br/>
+    End: {{ theme.endDate is empty ? "" : theme.endDate | date("F j, Y") }}<br/>
+    {% if theme.progress is not null %}
+        {{ theme.progress | format_number(style='percent') }}
+    {% endif %}
+    <div class="bargraph mb-4" data-progress="{{ theme.progress }}">
+        <div class="bar">
+        {# Javascript will make a percentage bargraph here #}
+        </div>
+    </div>
+    <hr/>
+    <small>Created: {{ theme.createdOn | date }} </small>
+</div>
