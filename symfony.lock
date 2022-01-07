@@ -97,6 +97,9 @@
     "michelf/php-markdown": {
         "version": "1.9.1"
     },
+    "misd/linkify": {
+        "version": "v1.1.4"
+    },
     "monolog/monolog": {
         "version": "2.3.5"
     },
