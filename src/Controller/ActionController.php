@@ -7,12 +7,11 @@ use App\Entity\Goal;
 use App\Entity\Theme;
 use App\Form\ActionType;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ActionController extends AbstractController
+class ActionController extends BaseController
 {
     /**
      * @Route("/theme/{theme}/goal/{goal}/action", name="action", methods="GET")
