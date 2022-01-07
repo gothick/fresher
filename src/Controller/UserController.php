@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @Route("/user", name="user_")
  */
-class UserController extends AbstractController
+class UserController extends BaseController
 {
     /**
      * @Route("/", name="index", methods={"GET"})

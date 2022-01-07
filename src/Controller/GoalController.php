@@ -6,12 +6,11 @@ use App\Entity\Goal;
 use App\Entity\Theme;
 use App\Form\GoalType;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class GoalController extends AbstractController
+class GoalController extends BaseController
 {
     /**
      * @Route("/theme/{theme}/goal", name="goal", methods={"GET"})

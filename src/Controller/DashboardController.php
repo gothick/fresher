@@ -4,11 +4,10 @@ namespace App\Controller;
 
 use App\Entity\User;
 use Exception;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class DashboardController extends AbstractController
+class DashboardController extends BaseController
 {
     /**
      * @Route("/dashboard", name="dashboard")
