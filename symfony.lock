@@ -103,6 +103,9 @@
     "myclabs/deep-copy": {
         "version": "1.10.2"
     },
+    "nesbot/carbon": {
+        "version": "2.55.2"
+    },
     "nikic/php-parser": {
         "version": "v4.13.2"
     },
@@ -637,6 +640,9 @@
     },
     "twig/extra-bundle": {
         "version": "v3.3.6"
+    },
+    "twig/intl-extra": {
+        "version": "v3.3.5"
     },
     "twig/twig": {
         "version": "v3.3.6"

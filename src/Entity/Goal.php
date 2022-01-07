@@ -15,6 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Goal
 {
     use ValidateStartEndDatesTrait;
+    use StartEndDateProgressTrait;
 
     public function __construct()
     {

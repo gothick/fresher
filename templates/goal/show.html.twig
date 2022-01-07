@@ -26,6 +26,14 @@
         <div class="col">
             Start: {{ goal.startDate is empty ? "<none>" | e : goal.startDate | date("F j, Y") }}<br/>
             End: {{ goal.endDate is empty ? "<none>" | e : goal.endDate | date("F j, Y") }}<br/>
+            {% if goal.progress is not null %}
+                {{ goal.progress | format_number(style='percent') }}
+                <div class="bargraph mb-4" data-progress="{{ goal.progress }}">
+                    <div class="bar">
+                    {# Javascript will make a percentage bargraph here #}
+                    </div>
+                </div>
+            {% endif %}
             <hr/>
             <small>Created: {{ goal.endDate | date }}</small>
             <hr/>

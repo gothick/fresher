@@ -13,5 +13,7 @@ import './fontawesome';
 // start the Stimulus application
 import './bootstrap';
 
+import './bargraph'; // We use this a lot, so let's have it everywhere for now.
+
 // Twitter Bootstrap js
 require('bootstrap');
