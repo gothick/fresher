@@ -26,6 +26,26 @@ div.bargraph {
     }
 }
 
+$future-past-goal-color: shade-color($body-color, 40%);
+$future-past-goal-link-color: shade-color($link-color, 40%);
+
+.goal-list {
+    .goal {
+        // &.current {
+        // }
+        &.future, &.past {
+            color: $future-past-goal-color;
+
+            a:link,
+            a:visited,
+            a:hover,
+            a:active {
+                color: $future-past-goal-link-color;
+            }
+
+        }
+    }
+}
 
 /*
 body {

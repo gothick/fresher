@@ -17,6 +17,7 @@ class Theme
 {
     use ValidateStartEndDatesTrait;
     use StartEndDateProgressTrait;
+    use IsCurrentTrait;
 
     public function __construct()
     {

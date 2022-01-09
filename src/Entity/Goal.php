@@ -16,6 +16,7 @@ class Goal
 {
     use ValidateStartEndDatesTrait;
     use StartEndDateProgressTrait;
+    use IsCurrentTrait;
 
     public function __construct()
     {
