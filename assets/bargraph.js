@@ -6,10 +6,10 @@ $(() => {
     const bar = $(this).children('.bar').eq(0);
     bar.width(`${progress}%`);
     if (progress > 70) {
-      bar.addClass('warn');
+      bar.addClass('warm');
     }
     if (progress > 90) {
-      bar.addClass('critical');
+      bar.addClass('hot');
     }
   });
 });
