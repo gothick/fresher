@@ -38,7 +38,7 @@ class RegistrationController extends BaseController
     ): Response {
 
         $verifiedUserCount = $userRepository->getVerifiedUserCount();
-        if ($verifiedUserCount > 0) {
+        if ($verifiedUserCount > 3) {
             $this->addFlash('danger', "Sorry, there are already {$verifiedUserCount} users.");
             return $this->redirectToRoute('app_too_many_users');
         }
@@ -114,14 +114,14 @@ class RegistrationController extends BaseController
         try {
             $this->emailVerifier->handleEmailConfirmation($request, $user);
         } catch (VerifyEmailExceptionInterface $exception) {
-            $this->addFlash('verify_email_error', $exception->getReason());
-            return $this->redirectToRoute('app_register');
+            // Likely ExpiredSignatureException or InvalidSignatureException. We could
+            // be cleverer about these later.
+            $this->addFlash('danger', $exception->getReason());
+            return $this->redirectToRoute('app_verify_resend_email');
         }
 
-        // @TODO Change the redirect on success and handle or remove the flash message in your templates
         $this->addFlash('success', 'Your email address has been verified.');
-
-        return $this->redirectToRoute('app_register');
+        return $this->redirectToRoute('login');
     }
     /**
      * @Route("/verify/resend_email", name="app_verify_resend_email", methods={"GET", "POST"})
