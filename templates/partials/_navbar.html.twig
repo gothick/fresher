@@ -20,6 +20,9 @@
                 {% else %}
                 <a class="nav-item nav-link" href="{{ path('login') }}">Log in</a>
                 {% endif %}
+                {% if is_granted('ROLE_ADMIN') %}
+                <a class="nav-item nav-link" href="{{ path('settings_index') }}">Site Settings</a>
+                {% endif %}
             </div>
 
 

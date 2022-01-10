@@ -21,5 +21,11 @@ services:
             - '../src/Kernel.php'
             - '../src/Tests/'
 
+    # So we can let things through on the dev firewall even while we're
+    # redirecting everything else to the setup page.
+    App\Security\CheckAnyUsersRegisteredSubscriber:
+        arguments:
+            $firewallMap: '@security.firewall.map'
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
