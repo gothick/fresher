@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Repository\SettingsRepository;
 use App\Entity\Settings;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class SettingsService
@@ -11,9 +12,13 @@ class SettingsService
     /** @var Settings */
     private $settings;
 
+    /** @var UserRepository */
+    private $userRepository;
+
     public function __construct(
         SettingsRepository $settingsRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        UserRepository $userRepository
     ) {
         $settings = $settingsRepository->getTheSingleRow();
         if ($settings === null) {
@@ -28,6 +33,7 @@ class SettingsService
             $entityManager->flush();
         }
         $this->settings = $settings;
+        $this->userRepository = $userRepository;
     }
 
     public function getSettings(): Settings
@@ -42,5 +48,16 @@ class SettingsService
     public function getMaxUsers()
     {
         return $this->settings->getMaxUsers();
+    }
+
+    public function areNewUsersAllowed(): bool
+    {
+        $maxUsers = $this->settings->getMaxUsers();
+        if ($maxUsers !== null) {
+            if ($this->userRepository->getUserCount() >= $maxUsers) {
+                return false;
+            }
+        }
+        return true;
     }
 }
