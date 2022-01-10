@@ -6,7 +6,12 @@
 <div class="container">
     <h1>Welcome to <em>Fresher</em></h1>
     <p>Fresher helps take your journey in the right direction by reminding you what's important to <em>you</em>.
-    <p><strong>New here?</strong> <a href="{{ path('app_register') }}">Sign up to see where you could go</a>.</p>
+    {% if settings.areNewUsersAllowed %}
+        <p><strong>New here?</strong> <a href="{{ path('app_register') }}">Sign up to see where you could go</a>.</p>
+    {% else %}
+        <p>Sorry, we're not allowing new registrations at this time.</p>
+    {% endif %}
+
     <p><strong>Old hand?</strong> <a href="{{ path('dashboard') }}">Go to your Home screen</a>.</p>
 </div>
 {% endblock %}
