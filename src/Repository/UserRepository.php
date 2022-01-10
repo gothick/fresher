@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Exception;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
@@ -38,11 +39,21 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     public function getVerifiedUserCount(): int
     {
-        return (int) $this->createQueryBuilder('u')
+        $result = $this->createQueryBuilder('u')
             ->select('count(u)')
             ->where('u.isVerified = true')
             ->getQuery()
             ->getSingleScalarResult();
+        return intval($result);
+    }
+
+    public function getUserCount(): int
+    {
+        $result =  $this->createQueryBuilder('u')
+            ->select('count(u)')
+            ->getQuery()
+            ->getSingleScalarResult();
+        return intval($result);
     }
 
     // /**
