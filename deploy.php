@@ -47,6 +47,9 @@ after('deploy:failed', 'deploy:unlock');
 // Migrate just before we symlink the new release
 before('deploy:symlink', 'database:migrate');
 
+// Clear opcache on successful deployment
+after('deploy:symlink', 'cachetool:clear:opcache');
+
 // Yarn and Webpack Encore.
 after('deploy:vendors', 'yarn:install');
 after('yarn:install', 'webpack_encore:build');
