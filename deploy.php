@@ -3,38 +3,50 @@ namespace Deployer;
 
 require 'recipe/symfony.php';
 
-// Project name
-set('application', 'my_project');
+require 'contrib/cachetool.php';
+require 'contrib/webpack_encore.php';
 
-// Project repository
-set('repository', 'git@github.com:gothick/fresher.git');
-
-// [Optional] Allocate tty for git clone. Default value is false.
-set('git_tty', true); 
-
-// Shared files/dirs between deploys 
-add('shared_files', []);
-add('shared_dirs', []);
-
-// Writable dirs by web server 
-add('writable_dirs', []);
-
-
-// Hosts
-
-host('project.com')
-    ->set('deploy_path', '~/{{application}}');    
-    
-// Tasks
-
-task('build', function () {
-    run('cd {{release_path}} && build');
+// Cachetool needs to be a lower version than default,
+// as the latest only works with php 8.
+// https://github.com/deployphp/deployer/issues/2344
+// https://gordalina.github.io/cachetool/
+// https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L55
+// https://github.com/gordalina/cachetool/releases/download/7.0.0/cachetool.phar
+set('bin/cachetool', function () {
+    if (!test('[ -f {{release_or_current_path}}/cachetool.phar ]')) {
+        run("cd {{release_or_current_path}} && curl -sLO https://github.com/gordalina/cachetool/releases/download/7.0.0/cachetool.phar");
+    }
+    return '{{release_or_current_path}}/cachetool.phar';
 });
 
-// [Optional] if deploy fails automatically unlock.
+
+// Config
+set('repository', 'git@github.com:gothick/fresher.git');
+
+add('shared_files', []);
+add('shared_dirs', []);
+add('writable_dirs', []);
+
+// Hosts
+host('fresher.gothick.org.uk')
+    ->set('remote_user', 'fresher')
+    ->set('deploy_path', '/var/www/sites/fresher.gothick.org.uk')
+    ->set('webpack_encore/env', 'production')
+    ->set('webpack_encore/package_manager', 'yarn')
+    ->set('cachetool_args', '--fcgi=/run/php/chef-managed-fpm-fresher.sock --tmp-dir=/tmp')
+    ;
+
+// Tasks
+task('build', function () {
+    cd('{{release_path}}');
+    run('npm run build');
+});
+
 after('deploy:failed', 'deploy:unlock');
 
-// Migrate database before symlink new release.
-
+// Migrate just before we symlink the new release
 before('deploy:symlink', 'database:migrate');
 
+// Yarn and Webpack Encore.
+after('deploy:vendors', 'yarn:install');
+after('yarn:install', 'webpack_encore:build');
