@@ -12,12 +12,16 @@
 
     {{ form_start(registrationForm) }}
         {{ form_row(registrationForm.email) }}
+        {{ form_row(registrationForm.displayName) }}
+        {{ form_row(registrationForm.timezone) }}
         {{ form_row(registrationForm.plainPassword, {
             label: 'Password'
         }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+        {% if registrationForm.agreeTerms is defined %}
+            {{ form_row(registrationForm.agreeTerms) }}
+        {% endif %}
 
-        <button type="submit" class="btn">Register</button>
+        <button type="submit" class="btn btn-primary">Register</button>
     {{ form_end(registrationForm) }}
     </div>
 {% endblock %}

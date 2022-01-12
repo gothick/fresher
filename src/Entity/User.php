@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -42,6 +43,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Length(
+     *  max = 255,
+     *  maxMessage = "Display name cannot be longer than {{ limit }} characters"
+     * )
      */
     private $displayName;
 
@@ -54,6 +59,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\OneToMany(targetEntity=Theme::class, mappedBy="owner", orphanRemoval=true)
      */
     private $themes;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Timezone
+     * @Assert\NotBlank
+     */
+    private $timezone;
 
     public function __construct()
     {
@@ -199,6 +211,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $theme->setOwner(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTimezone(): ?string
+    {
+        return $this->timezone;
+    }
+
+    public function setTimezone(string $timezone): self
+    {
+        $this->timezone = $timezone;
 
         return $this;
     }
