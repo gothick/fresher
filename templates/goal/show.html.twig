@@ -21,8 +21,12 @@
                 choices will be sent to you as part of your reFresher schedule.)
             </small></p>
             {{ include('partials/_action_list.html.twig', {actions: goal.actions }) }}
-            <a href="{{ path('action_new', { 'theme': theme.id, 'goal': goal.id }) }}">Add an action</a>
+            <a class="ms-3" href="{{ path('action_new', { 'theme': theme.id, 'goal': goal.id }) }}">Add an action</a>
+            <h2 class="mt-4"><a href="{{ path("goal_reminder", { 'goal': goal.id }) }}">Reminders</a></h2>
+            {{ include('partials/_goal_reminder_list.html.twig') }}
+            <a class="ms-3" href="{{ path('goal_reminder_new', { 'goal': goal.id }) }}">Add a reminder</a>
         </div>
+        {# SIDEBAR #}
         <div class="col">
             Start: {{ goal.startDate is empty ? "<none>" | e : goal.startDate | date("F j, Y") }}<br/>
             End: {{ goal.endDate is empty ? "<none>" | e : goal.endDate | date("F j, Y") }}<br/>
@@ -46,8 +50,8 @@
                 <input type="hidden" name="token" value="{{ csrf_token('goal_delete') }}"/>
                 <button type="submit" name="btn_delete" class="btn btn-danger mt-4"><i class="fas fa-trash-alt" aria-hidden="true"></i> Delete Goal</button>
             </form>
-
         </div>
+        {# END SIDEBAR #}
     </div>
     <hr/>
     <a href="{{ path('goal_edit', { 'theme': theme.id, 'goal': goal.id }) }}" class="btn btn-secondary mt-2">Edit Goal</a>

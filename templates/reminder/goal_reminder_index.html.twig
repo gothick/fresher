@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fresher - Goal Reminders{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Reminders for Goal: <em>{{ goal.name }}</em></h1>
+    {{ include('partials/_goal_reminder_list.html.twig') }}
+    <a class="ms-3" href="{{ path('goal_reminder_new', { 'goal': goal.id }) }}">Add a reminder</a>
+</div>
+{% endblock %}
