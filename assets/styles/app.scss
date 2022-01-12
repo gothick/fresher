@@ -4,6 +4,12 @@
 @import "~bootstrap/scss/bootstrap";
 @import "~bootswatch/dist/darkly/bootswatch";
 
+.env-dev  {
+    .navbar.bg-light {
+        background-color: rgb(255, 131, 131) !important;
+    }
+}
+
 label.required:before {
     content: "*";
 }
