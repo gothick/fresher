@@ -1,5 +1,12 @@
 <div class="goal-list">
-    {% for goal in theme.goals %}
+    {% for goal in theme.goals | filter(g => g.isInPast) %}
+    <div class="row">
+        <div class="col goal past">
+            <p><a href="{{ path('goal_show', { 'theme': theme.id, 'goal': goal.id }) }}">{{ goal.name }}</a> <small>(past/complete)</small></p>
+        </div>
+    </div>
+    {% endfor %}
+    {% for goal in theme.goals | filter(g => g.isInPast == false ) %}
     <div class="row">
         <div class="col goal
             {{ goal.isCurrent ? "current" : "" }}

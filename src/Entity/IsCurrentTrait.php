@@ -24,7 +24,7 @@ trait IsCurrentTrait
     /**
      * @return bool|null
      */
-    public function IsInPast()
+    public function isInPast()
     {
         if ($this->getStartDate() === null || $this->getEndDate() === null) {
             return null;
@@ -38,7 +38,7 @@ trait IsCurrentTrait
     /**
      * @return bool|null
      */
-    public function IsInFuture()
+    public function isInFuture()
     {
         if ($this->getStartDate() === null || $this->getEndDate() === null) {
             return null;

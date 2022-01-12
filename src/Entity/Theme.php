@@ -69,6 +69,8 @@ class Theme
 
     /**
      * @ORM\OneToMany(targetEntity=Goal::class, mappedBy="theme", orphanRemoval=true)
+     * @ORM\OrderBy({"startDate" = "ASC"})
+     *
      */
     private $goals;
 

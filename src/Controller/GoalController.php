@@ -22,7 +22,10 @@ class GoalController extends BaseController
 
         return $this->render('goal/index.html.twig', [
             'theme' => $theme,
-            'goals' => $goals
+            'goals' => $goals,
+            'current_goals' => $currentGoals,
+            'future_goals' => $futureGoals,
+            'past_goals' => $pastGoals
         ]);
     }
 
