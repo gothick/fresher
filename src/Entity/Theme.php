@@ -23,6 +23,7 @@ class Theme
     {
         $this->createdOn = new DateTime();
         $this->goals = new ArrayCollection();
+        $this->reminders = new ArrayCollection();
     }
 
     /**
@@ -73,6 +74,11 @@ class Theme
      *
      */
     private $goals;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ThemeReminder::class, mappedBy="theme", orphanRemoval=true)
+     */
+    private $reminders;
 
     public function getId(): ?int
     {
@@ -175,6 +181,36 @@ class Theme
             // set the owning side to null (unless already changed)
             if ($goal->getTheme() === $this) {
                 $goal->setTheme(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ThemeReminder[]
+     */
+    public function getReminders(): Collection
+    {
+        return $this->reminders;
+    }
+
+    public function addReminder(ThemeReminder $reminder): self
+    {
+        if (!$this->reminders->contains($reminder)) {
+            $this->reminders[] = $reminder;
+            $reminder->setTheme($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReminder(ThemeReminder $reminder): self
+    {
+        if ($this->reminders->removeElement($reminder)) {
+            // set the owning side to null (unless already changed)
+            if ($reminder->getTheme() === $this) {
+                $reminder->setTheme(null);
             }
         }
 

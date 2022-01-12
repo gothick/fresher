@@ -1,0 +1,12 @@
+{% if goal.reminders | length > 0 %}
+    <ul class="reminder list">
+    {% for reminder in goal.reminders %}
+        <li>
+            {{ reminder.enabled ? '(enabled)' : '(disabled)' }}
+            <a href="{{ path('goal_reminder_edit', { 'goal': goal.id, 'reminder': reminder.id }) }}">[edit]</a>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>{{ no_reminder_description ?? "(There are no reminders yet.)" }}</p>
+{% endif %}
