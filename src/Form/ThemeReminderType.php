@@ -3,8 +3,11 @@
 namespace App\Form;
 
 use App\Entity\ThemeReminder;
+use App\Types\ReminderStyle;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,6 +17,9 @@ class ThemeReminderType extends AbstractType
     {
         $builder
             ->add('enabled')
+            ->add('timeOfDay', TimeType::class, [
+                'label' => 'Time of day to send reminder'
+            ])
             ->add('create', SubmitType::class, [
                 'label' => $options['submit_label']
             ]);

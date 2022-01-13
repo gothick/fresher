@@ -27,6 +27,11 @@ abstract class Reminder
      */
     private $enabled;
 
+    /**
+     * @ORM\Column(type="time")
+     */
+    private $timeOfDay;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -40,6 +45,18 @@ abstract class Reminder
     public function setEnabled(bool $enabled): self
     {
         $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    public function getTimeOfDay(): ?\DateTimeInterface
+    {
+        return $this->timeOfDay;
+    }
+
+    public function setTimeOfDay(\DateTimeInterface $timeOfDay): self
+    {
+        $this->timeOfDay = $timeOfDay;
 
         return $this;
     }
