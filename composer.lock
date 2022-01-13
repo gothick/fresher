@@ -8355,16 +8355,16 @@
     "packages-dev": [
         {
             "name": "deployer/deployer",
-            "version": "v7.0.0-rc.3",
+            "version": "v7.0.0-rc.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/deployphp/deployer.git",
-                "reference": "cafe007465c8bf48eee0acc43959e8ed04ff6074"
+                "reference": "06be0ce1b0c75d4ed1aa6bdc0de77350e59d657c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/deployphp/deployer/zipball/cafe007465c8bf48eee0acc43959e8ed04ff6074",
-                "reference": "cafe007465c8bf48eee0acc43959e8ed04ff6074",
+                "url": "https://api.github.com/repos/deployphp/deployer/zipball/06be0ce1b0c75d4ed1aa6bdc0de77350e59d657c",
+                "reference": "06be0ce1b0c75d4ed1aa6bdc0de77350e59d657c",
                 "shasum": ""
             },
             "require": {
@@ -8422,7 +8422,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-11-21T22:14:58+00:00"
+            "time": "2022-01-13T13:39:08+00:00"
         },
         {
             "name": "evenement/evenement",
@@ -11713,5 +11713,5 @@
         "ext-iconv": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.2.0"
 }
