@@ -1,0 +1,12 @@
+{% if theme.reminders | length > 0 %}
+    <ul class="reminder list">
+    {% for reminder in theme.reminders %}
+        <li>
+            {{ reminder.enabled ? '(enabled)' : '(disabled)' }}
+            <a href="{{ path('theme_reminder_edit', { 'theme': theme.id, 'reminder': reminder.id }) }}">[edit]</a>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>{{ no_reminder_description ?? "(There are no reminders yet.)" }}</p>
+{% endif %}

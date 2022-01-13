@@ -15,9 +15,14 @@
             <div class="ms-4">
                 {{ include('partials/_goal_list.html.twig') }}
             </div>
-            <p><a href="{{ path('goal_new', { 'theme': theme.id }) }}" class="ps-2">Add a goal</a></p>
+            <p class="ms-3"><a href="{{ path('goal_new', { 'theme': theme.id }) }}" class="ps-2">Add a goal</a></p>
+            <h2 class="mt-4"><a href="{{ path("theme_reminder", { 'theme': theme.id }) }}">Reminders</a></h2>
+            {{ include('partials/_theme_reminder_list.html.twig') }}
+            <a class="ms-3" href="{{ path('theme_reminder_new', { 'theme': theme.id }) }}">Add a reminder</a>
+            <hr/>
             <a href="{{ path('theme_edit', { 'id': theme.id }) }}" class="btn btn-secondary mt-2">Edit Theme</a>
         </div>
+        {# SIDEBAR #}
         <div class="col">
             {{ include('partials/_theme_metadata.html.twig') }}
             <hr/>
@@ -31,6 +36,7 @@
                 <button type="submit" name="btn_delete" class="btn btn-danger mt-4"><i class="fas fa-trash-alt" aria-hidden="true"></i> Delete Theme</button>
             </form>
         </div>
+        {# SIDEBAR END #}
     </div>
 </div>
 {% endblock %}
