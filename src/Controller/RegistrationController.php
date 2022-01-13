@@ -44,7 +44,11 @@ class RegistrationController extends BaseController
         }
 
         $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        // TODO: Configurable default? Change it client-side if we can detect?
+        $user->setTimezone('Europe/London');
+        $form = $this->createForm(RegistrationFormType::class, $user, [
+            'show_agree_terms' => false
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
