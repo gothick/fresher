@@ -2,6 +2,7 @@
     <ul class="reminder list">
     {% for reminder in theme.reminders %}
         <li>
+            {{ reminder.daySchedule | friendly_day_schedule }}
             {{ reminder.timeOfDay | date('H:i') }}
             {{ reminder.enabled ? '(enabled)' : '(disabled)' }}
             <a href="{{ path('theme_reminder_edit', { 'theme': theme.id, 'reminder': reminder.id }) }}">[edit]</a>
