@@ -4,7 +4,12 @@ namespace App\Repository;
 
 use App\Entity\MotivationalQuote;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\NativeQuery;
+use Exception;
 
 /**
  * @method MotivationalQuote|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,6 +24,40 @@ class MotivationalQuoteRepository extends ServiceEntityRepository
         parent::__construct($registry, MotivationalQuote::class);
     }
 
+    /**
+     * @return mixed
+     */
+    public function getRandomQuote()
+    {
+        $platform = $this->getEntityManager()->getConnection()->getDatabasePlatform();
+
+        if ($platform instanceof PostgreSQLPlatform) {
+            $randomFunc = 'random()';
+        } elseif ($platform instanceof MySQLPlatform) {
+            $randomFunc = 'rand()';
+        } else {
+            throw new Exception('getRandomQuote only copes with MySQL and Postgres so far.');
+        }
+
+        $table = $this->getClassMetadata()->getTableName();
+        $rsm = new ResultSetMapping();
+        $rsm->addEntityResult($this->getEntityName(), 'q');
+        $rsm->addFieldResult('q', 'id', 'id');
+        $rsm->addFieldResult('q', 'quote', 'quote');
+        $rsm->addFieldResult('q', 'attribution', 'attribution');
+        $rsm->addFieldResult('q', 'created_at', 'createdAt');
+        $rsm->addFieldResult('q', 'updated_at', 'updatedAt');
+        $sql = "
+            SELECT
+                q.id, q.quote, q.attribution, q.created_at, q.updated_at
+            FROM
+                {$table} q
+            ORDER BY
+                {$randomFunc}
+            LIMIT 1";
+        $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
+        return $query->getOneOrNullResult();
+    }
     // /**
     //  * @return MotivationalQuote[] Returns an array of MotivationalQuote objects
     //  */
