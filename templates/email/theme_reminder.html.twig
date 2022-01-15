@@ -1,0 +1,26 @@
+{% apply inline_css %}
+<style>
+    {# TODO: use inline styles? https://symfony.com/doc/current/mailer.html#using-external-css-files #}
+    * {
+        font-family: sans-serif;
+    }
+</style>
+<h1>Theme Reminder</h1>
+<p>Hi! This is the reminder for your theme <em>{{ theme.name }}</em> from
+    <a href="{{ url('welcome') }}">Fresher</a>!</p>
+<h2>Current Goals</h2>
+{% for goal in theme.goals | filter(g => g.isCurrent) %}
+    <h3>{{ goal.name }}</h3>
+    {{ goal.description | striptags | markdown }}
+    {% if goal.actions | length > 0 %}
+        <p>Here's something you could do right now:</p>
+        <ul><li><strong>{{ random(goal.actions).description }}</strong></li></ul>
+    {% endif %}
+{% endfor %}
+{% if theme.description is not empty %}
+<h2>Theme Motivation</h2>
+{{ theme.description | striptags | markdown }}
+{% endif %}
+<hr />
+<p>As always, good luck with your theme and goals!</p>
+{% endapply %}

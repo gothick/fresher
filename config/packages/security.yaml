@@ -45,6 +45,7 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/admin, roles: [ROLE_ADMIN] }
+        - { path: ^/testing, roles: [ROLE_ADMIN] }
         - { path: ^/user, roles: [ROLE_USER] }
         - { path: ^/dashboard, roles: ROLE_USER }
         - { path: ^/theme, roles: ROLE_USER }

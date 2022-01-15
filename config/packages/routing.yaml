@@ -6,8 +6,10 @@ framework:
         # See https://symfony.com/doc/current/routing.html#generating-urls-in-commands
         # TODO: Configure for dev, test and live
         #default_uri: http://localhost
+        default_uri: 'https://fresher.wip'
 
 when@prod:
     framework:
         router:
             strict_requirements: null
+            default_uri: 'https://fresher.gothick.org.uk'
