@@ -158,7 +158,7 @@ class ReminderService
             //->bcc('bcc@example.com')
             //->replyTo('fabien@example.com')
             //->priority(Email::PRIORITY_HIGH)
-            ->subject('Time for Symfony Mailer!')
+            ->subject("Theme Reminder: {$themeName}")
             ->htmlTemplate('email/theme_reminder.html.twig')
             ->context(['theme' => $theme]);
         $this->mailer->send($email);
