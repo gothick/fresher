@@ -6,6 +6,7 @@ use App\Entity\Theme;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class TestingController extends AbstractController
 {
@@ -21,6 +22,7 @@ class TestingController extends AbstractController
 
     /**
      * @Route("/testing/theme/{theme}/reminder", name="testing_theme_reminder")
+     * @IsGranted("access", subject="theme")
      */
     public function themeReminder(
         Theme $theme

@@ -9,23 +9,21 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class GoalController extends BaseController
 {
     /**
      * @Route("/theme/{theme}/goal", name="goal", methods={"GET"})
+     * @IsGranted("access", subject="theme")
      */
     public function index(Theme $theme): Response
     {
-        // TODO: Security
         $goals = $theme->getGoals();
 
         return $this->render('goal/index.html.twig', [
             'theme' => $theme,
             'goals' => $goals,
-            'current_goals' => $currentGoals,
-            'future_goals' => $futureGoals,
-            'past_goals' => $pastGoals
         ]);
     }
 
@@ -36,6 +34,7 @@ class GoalController extends BaseController
      *  methods={"GET"},
      *  requirements={"goal"="\d+"}
      * )
+     * @IsGranted("access", subject="goal")
      */
     public function show(Theme $theme, Goal $goal): Response
     {
@@ -47,6 +46,7 @@ class GoalController extends BaseController
 
     /**
      * @Route("/theme/{theme}/goal/{goal}/edit", name="goal_edit", methods={"GET", "POST"})
+     * @IsGranted("access", subject="goal")
      */
     public function edit(
         Theme $theme,
@@ -75,6 +75,7 @@ class GoalController extends BaseController
 
     /**
      * @Route("/theme/{theme}/goal/{goal}/delete", name="goal_delete", methods={"DELETE"})
+     * @IsGranted("access", subject="goal")
      */
     public function delete(
         Theme $theme,
@@ -82,8 +83,6 @@ class GoalController extends BaseController
         Request $request,
         EntityManagerInterface $entityManager
     ): Response {
-        // TODO: security
-
         $submittedToken = (string) $request->request->get('token');
         if ($this->isCsrfTokenValid('goal_delete', $submittedToken)) {
             $entityManager->remove($goal);
@@ -97,6 +96,7 @@ class GoalController extends BaseController
 
     /**
      * @Route("/theme/{theme}/goal/new", name="goal_new", methods={"GET", "POST"})
+     * @IsGranted("access", subject="theme")
      */
     public function new(
         Theme $theme,
