@@ -3,3 +3,9 @@ framework:
         dsn: '%env(MAILER_DSN)%'
         envelope:
             sender: 'fresher@gothick.org.uk'
+
+when@dev:
+    framework:
+        mailer:
+            envelope:
+                sender: 'fresher-dev@gothick.org.uk'

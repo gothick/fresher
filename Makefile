@@ -9,7 +9,7 @@ sf: ## List all Symfony commands
 	@$(CONSOLE)
 
 cc: ## Clear the cache. DID YOU CLEAR YOUR CACHE????
-	@$(CONSOLE) c:c
+	@$(CONSOLE) cache:clear
 
 warmup: ## Warmup the cache
 	@$(CONSOLE) cache:warmup

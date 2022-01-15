@@ -22,9 +22,6 @@
             </small></p>
             {{ include('partials/_action_list.html.twig', {actions: goal.actions }) }}
             <a class="ms-3" href="{{ path('action_new', { 'theme': theme.id, 'goal': goal.id }) }}">Add an action</a>
-            <h2 class="mt-4"><a href="{{ path("goal_reminder", { 'goal': goal.id }) }}">Reminders</a></h2>
-            {{ include('partials/_goal_reminder_list.html.twig') }}
-            <a class="ms-3" href="{{ path('goal_reminder_new', { 'goal': goal.id }) }}">Add a reminder</a>
         </div>
         {# SIDEBAR #}
         <div class="col">
