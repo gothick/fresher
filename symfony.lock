@@ -2,6 +2,12 @@
     "composer/package-versions-deprecated": {
         "version": "1.11.99.4"
     },
+    "cron/cron": {
+        "version": "1.6.0"
+    },
+    "cron/cron-bundle": {
+        "version": "2.10.1"
+    },
     "deployer/deployer": {
         "version": "v7.0.0-rc.3"
     },
