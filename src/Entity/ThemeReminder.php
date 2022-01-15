@@ -16,6 +16,7 @@ class ThemeReminder
     public function __construct()
     {
         $this->enabled = true;
+        $this->reminderJobs = new ArrayCollection();
     }
     /**
      * @ORM\Id

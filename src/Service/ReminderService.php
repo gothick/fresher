@@ -77,13 +77,23 @@ class ReminderService
     public function createThemeReminderJobsForUser(User $user): void
     {
         foreach ($user->getThemes() as $theme) {
-            foreach ($theme->getReminders() as $reminder) {
-                $this->createThemeReminderJobs($user, $reminder);
-            }
+            $this->createReminderJobsForTheme($theme);
         }
     }
-    private function createThemeReminderJobs(User $user, ThemeReminder $reminder): void
+
+    public function createReminderJobsForTheme(Theme $theme): void
     {
+        foreach ($theme->getReminders() as $reminder) {
+            $this->createThemeReminderJobs($theme, $reminder);
+        }
+    }
+
+    private function createThemeReminderJobs(Theme $theme, ThemeReminder $reminder): void
+    {
+        $user = $theme->getOwner();
+        if ($user === null) {
+            throw new Exception('Expected every theme to have a User');
+        }
         $userTimezone = $user->getTimezone();
         if ($userTimezone === null || $userTimezone === '') {
             $this->logger->warning("User {$user->getId()} has no timezone set. Defaulting jobs to UTC");
@@ -98,27 +108,29 @@ class ReminderService
             return true;
         });
 
-        // We go through all the next few days of the user's own timezone,
-        // creating appropriate ReminderJobs in the UTC timezone.
-        $now = CarbonImmutable::now('UTC');
-        $start = CarbonImmutable::now(new CarbonTimeZone($user->getTimezone()))->setTime(0, 0);
-        $end = new CarbonImmutable($start->addDays(7));
-        for ($day = new Carbon($start); $day < $end; $day->addDays(1)) {
-            // Create all appropriate reminder jobs for the day in question.
-            if (
-                $reminder->getDaySchedule() === 'everyday' ||
-                ($reminder->getDaySchedule() === 'weekdays' && $day->isWeekday()) ||
-                ($reminder->getDaySchedule() === 'weekends' && $day->isWeekend())
-            ) {
-                $reminderTimeOfDay = new Carbon($reminder->getTimeOfDay());
-                $jobTime = (new Carbon($day))->setTime($reminderTimeOfDay->hour, $reminderTimeOfDay->minute);
-                $jobTimeUtc = new CarbonImmutable($jobTime, 'UTC');
-                if ($jobTimeUtc > $now) {  // Don't add jobs in the past.
-                    $reminderJob = new ThemeReminderJob();
-                    $reminderJob->setScheduledAt($jobTimeUtc);
-                    $reminder->addReminderJob($reminderJob);
-                    $this->entityManager->persist($reminderJob);
-                    $this->logger->info("Set up job for " . $jobTimeUtc->toCookieString());
+        if ($reminder->getEnabled()) {
+            // We go through all the next few days of the user's own timezone,
+            // creating appropriate ReminderJobs in the UTC timezone.
+            $now = CarbonImmutable::now('UTC');
+            $start = CarbonImmutable::now(new CarbonTimeZone($user->getTimezone()))->setTime(0, 0);
+            $end = new CarbonImmutable($start->addDays(7));
+            for ($day = new Carbon($start); $day < $end; $day->addDays(1)) {
+                // Create all appropriate reminder jobs for the day in question.
+                if (
+                    $reminder->getDaySchedule() === 'everyday' ||
+                    ($reminder->getDaySchedule() === 'weekdays' && $day->isWeekday()) ||
+                    ($reminder->getDaySchedule() === 'weekends' && $day->isWeekend())
+                ) {
+                    $reminderTimeOfDay = new Carbon($reminder->getTimeOfDay());
+                    $jobTime = (new Carbon($day))->setTime($reminderTimeOfDay->hour, $reminderTimeOfDay->minute);
+                    $jobTimeUtc = new CarbonImmutable($jobTime, 'UTC');
+                    if ($jobTimeUtc > $now) {  // Don't add jobs in the past.
+                        $reminderJob = new ThemeReminderJob();
+                        $reminderJob->setScheduledAt($jobTimeUtc);
+                        $reminder->addReminderJob($reminderJob);
+                        $this->entityManager->persist($reminderJob);
+                        $this->logger->info("Set up job for " . $jobTimeUtc->toCookieString());
+                    }
                 }
             }
         }

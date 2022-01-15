@@ -6,6 +6,7 @@ use App\Entity\Goal;
 use App\Entity\Theme;
 use App\Entity\ThemeReminder;
 use App\Form\ThemeReminderType;
+use App\Service\ReminderService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,7 +35,8 @@ class ReminderController extends AbstractController
     public function newThemeReminder(
         Theme $theme,
         Request $request,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        ReminderService $reminderService
     ): Response {
         $themeReminder = new ThemeReminder();
         $themeReminder->setTheme($theme);
@@ -46,6 +48,7 @@ class ReminderController extends AbstractController
             $themeReminder = $form->getData();
             $entityManager->persist($themeReminder);
             $entityManager->flush();
+            $reminderService->createReminderJobsForTheme($theme);
             $this->addFlash('success', "New Theme Reminder added.");
             return $this->redirectToRoute('theme_show', [
                 'id' => $theme->getId()
@@ -65,7 +68,8 @@ class ReminderController extends AbstractController
         Theme $theme,
         ThemeReminder $themeReminder,
         Request $request,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        ReminderService $reminderService
     ): Response {
         $form = $this->createForm(ThemeReminderType::class, $themeReminder, [
             'submit_label' => 'Save'
@@ -76,6 +80,8 @@ class ReminderController extends AbstractController
             /** @var ThemeReminder $themeReminder */
             $themeReminder = $form->getData();
             $entityManager->flush();
+            // Make sure we regenerate the jobs now we've changed the reminder.
+            $reminderService->createReminderJobsForTheme($theme);
             $this->addFlash('success', "Theme Reminder edited.");
             return $this->redirectToRoute('theme_show', [
                 'id' => $theme->getId()
