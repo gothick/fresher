@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Theme;
+use App\Repository\MotivationalQuoteRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,11 +26,15 @@ class TestingController extends AbstractController
      * @IsGranted("access", subject="theme")
      */
     public function themeReminder(
-        Theme $theme
+        Theme $theme,
+        MotivationalQuoteRepository $quoteRepository
     ): Response {
-        // TODO: Security
+
+        $quote = $quoteRepository->getRandomQuote();
+
         return $this->render('testing/theme_reminder.html.twig', [
-            'theme' => $theme
+            'theme' => $theme,
+            'quote' => $quote
         ]);
     }
 }

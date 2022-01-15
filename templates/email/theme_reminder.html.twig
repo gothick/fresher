@@ -34,5 +34,14 @@
 {{ theme.description | striptags | markdown }}
 {% endif %}
 <hr />
+{% if quote is null %}
 <p>As always, good luck with your theme and goals!</p>
+{% else %}
+<blockquote>
+    <p>
+        “{{ quote.quote | striptags | markdown_inline }}”<br />
+        <div style="margin-left: 36px"> — {{ quote.attribution | striptags | markdown_inline }}</div>
+    </p>
+</blockquote>
+{% endif %}
 {% endapply %}

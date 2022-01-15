@@ -13,16 +13,16 @@
         font-family: sans-serif;
     }
     p, li {
-        font-size: 17px;
+        font-size: 16px;
     }
     h1 {
-        font-size: 24px;
+        font-size: 21px;
     }
     h2 {
-        font-size: 22px;
+        font-size: 19px;
     }
     h3 {
-        font-size: 20px;
+        font-size: 17px;
     }
 </style>
 <h1>Theme Reminder</h1>
@@ -34,7 +34,7 @@
     {{ goal.description | striptags | markdown }}
     {% if goal.actions | length > 0 %}
         <p>Here's something you could do right now:</p>
-        <ul><li>{{ random(goal.actions).description }}</li></ul>
+        <ul><li><strong>{{ random(goal.actions).description }}</strong></li></ul>
     {% endif %}
 {% endfor %}
 {% if theme.description is not empty %}
@@ -42,5 +42,14 @@
 {{ theme.description | striptags | markdown }}
 {% endif %}
 <hr />
+{% if quote is null %}
 <p>As always, good luck with your theme and goals!</p>
+{% else %}
+<blockquote>
+    <p>
+        “{{ quote.quote | striptags | markdown_inline }}”<br />
+        <div style="margin-left: 36px"> — {{ quote.attribution | striptags | markdown_inline }}</div>
+    </p>
+</blockquote>
+{% endif %}
 {% endapply %}

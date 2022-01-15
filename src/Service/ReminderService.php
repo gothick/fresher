@@ -7,6 +7,7 @@ use App\Entity\Theme;
 use App\Entity\ThemeReminder;
 use App\Entity\ThemeReminderJob;
 use App\Entity\User;
+use App\Repository\MotivationalQuoteRepository;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonTimeZone;
@@ -35,6 +36,11 @@ class ReminderService
      */
     private $mailer;
 
+    /**
+     * @var MotivationalQuoteRepository
+     */
+    private $quoteRepository;
+
     /** @var string */
     private $adminEmailAddress;
     /** @var string */
@@ -45,13 +51,15 @@ class ReminderService
         EntityManagerInterface $entityManager,
         MailerInterface $mailer,
         string $adminEmailAddress,
-        string $adminEmailName
+        string $adminEmailName,
+        MotivationalQuoteRepository $quoteRepository
     ) {
         $this->logger = $logger;
         $this->entityManager = $entityManager;
         $this->mailer = $mailer;
         $this->adminEmailAddress = $adminEmailAddress;
         $this->adminEmailName = $adminEmailName;
+        $this->quoteRepository = $quoteRepository;
     }
 
     const DAY_SCHEDULE = [
@@ -175,6 +183,8 @@ class ReminderService
         $themeName = $theme->getName();
         $name = is_null($user->getDisplayName()) ? '' : $user->getDisplayName();
 
+        $quote = $this->quoteRepository->getRandomQuote();
+
         $this->logger->info("Sending email to {$user->getEmail()} about theme {$theme->getId()}");
         $email = (new TemplatedEmail())
             ->from(new Address($this->adminEmailAddress, $this->adminEmailName))
@@ -185,7 +195,10 @@ class ReminderService
             //->priority(Email::PRIORITY_HIGH)
             ->subject("Theme Reminder: {$themeName}")
             ->htmlTemplate('email/theme_reminder.html.twig')
-            ->context(['theme' => $theme]);
+            ->context([
+                'theme' => $theme,
+                'quote' => $quote
+            ]);
         $this->mailer->send($email);
     }
 }
