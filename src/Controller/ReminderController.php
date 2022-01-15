@@ -15,11 +15,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class ReminderController extends AbstractController
 {
     /**
      * @Route("/goal/{goal}/reminder", name="goal_reminder")
+     * @IsGranted("access", subject="goal")
      */
     public function goalReminderIndex(
         Goal $goal
@@ -35,6 +37,7 @@ class ReminderController extends AbstractController
 
     /**
      * @Route("/theme/{theme}/reminder", name="theme_reminder")
+     * @IsGranted("access", subject="theme")
      */
     public function themeReminderIndex(
         Theme $theme
@@ -46,6 +49,7 @@ class ReminderController extends AbstractController
 
     /**
      * @Route("/goal/{goal}/reminder/new", name="goal_reminder_new", methods={"GET", "POST"})
+     * @IsGranted("access", subject="goal")
      */
     public function newGoalReminder(
         Goal $goal,
@@ -80,6 +84,7 @@ class ReminderController extends AbstractController
     }
     /**
      * @Route("/theme/{theme}/reminder/new", name="theme_reminder_new", methods={"GET", "POST"})
+     * @IsGranted("access", subject="theme")
      */
     public function newThemeReminder(
         Theme $theme,
@@ -108,7 +113,8 @@ class ReminderController extends AbstractController
     }
 
     /**
-     * @Route("/goal/{goal}/reminder/{reminder}/edit]", name="goal_reminder_edit", methods={"GET", "POST"})
+     * @Route("/goal/{goal}/reminder/{reminder}/edit", name="goal_reminder_edit", methods={"GET", "POST"})
+     * @IsGranted("access", subject="goalReminder")
      */
     public function editGoalReminder(
         Goal $goal,
@@ -142,7 +148,8 @@ class ReminderController extends AbstractController
         ]);
     }
     /**
-     * @Route("/theme/{theme}/reminder/{reminder}/edit]", name="theme_reminder_edit", methods={"GET", "POST"})
+     * @Route("/theme/{theme}/reminder/{reminder}/edit", name="theme_reminder_edit", methods={"GET", "POST"})
+     * @IsGranted("access", subject="themeReminder")
      */
     public function editThemeReminder(
         Theme $theme,
@@ -174,6 +181,7 @@ class ReminderController extends AbstractController
 
     /**
      * @Route("/goal/{goal}/reminder/{reminder}/delete", name="goal_reminder_delete", methods={"DELETE"})
+     * @IsGranted("access", subject="goalReminder")
      */
     public function deleteGoalReminder(
         Goal $goal,
@@ -204,6 +212,7 @@ class ReminderController extends AbstractController
     }
     /**
      * @Route("/theme/{theme}/reminder/{reminder}/delete", name="theme_reminder_delete", methods={"DELETE"})
+     * @IsGranted("access", subject="themeReminder")
      */
     public function deleteThemeReminder(
         Theme $theme,
@@ -226,5 +235,4 @@ class ReminderController extends AbstractController
             'id' => $theme->getId()
         ]);
     }
-
 }
