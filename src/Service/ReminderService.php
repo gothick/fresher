@@ -35,14 +35,23 @@ class ReminderService
      */
     private $mailer;
 
+    /** @var string */
+    private $adminEmailAddress;
+    /** @var string */
+    private $adminEmailName;
+
     public function __construct(
         LoggerInterface $logger,
         EntityManagerInterface $entityManager,
-        MailerInterface $mailer
+        MailerInterface $mailer,
+        string $adminEmailAddress,
+        string $adminEmailName
     ) {
         $this->logger = $logger;
         $this->entityManager = $entityManager;
         $this->mailer = $mailer;
+        $this->adminEmailAddress = $adminEmailAddress;
+        $this->adminEmailName = $adminEmailName;
     }
 
     const DAY_SCHEDULE = [
@@ -127,11 +136,16 @@ class ReminderService
                     ) {
                         // Email's not that transactional and I'd rather default to
                         // sending no reminder than sending multiple reminders if
-                        // something goes wrong.
+                        // something goes wrong. We mark *jobs* as complete even if
+                        // the *reminder* is disabled, so we don't create a backlog
+                        // of un-run jobs that might all send at once if someone
+                        // re-enables the reminder.
                         $reminderJob->setWasRunAt($now);
                         $this->entityManager->flush();
                         // TODO: This should use Messenger, not hang around waiting.
-                        $this->sendReminderForTheme($theme);
+                        if ($reminder->getEnabled()) {
+                            $this->sendReminderForTheme($theme);
+                        }
                     }
                 }
             }
@@ -151,8 +165,7 @@ class ReminderService
 
         $this->logger->info("Sending email to {$user->getEmail()} about theme {$theme->getId()}");
         $email = (new TemplatedEmail())
-            // Our From address is globally configured in the mailer config.
-            // ->from('noreply@fresher.gothick.org.uk')
+            ->from(new Address($this->adminEmailAddress, $this->adminEmailName))
             ->to(new Address($user->getEmail(), $name))
             //->cc('cc@example.com')
             //->bcc('bcc@example.com')

@@ -82,11 +82,6 @@ class Goal
      */
     private $actions;
 
-    /**
-     * @ORM\OneToMany(targetEntity=GoalReminder::class, mappedBy="goal")
-     */
-    private $reminders;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -200,36 +195,6 @@ class Goal
             // set the owning side to null (unless already changed)
             if ($action->getGoal() === $this) {
                 $action->setGoal(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|GoalReminder[]
-     */
-    public function getReminders(): Collection
-    {
-        return $this->reminders;
-    }
-
-    public function addReminder(GoalReminder $reminder): self
-    {
-        if (!$this->reminders->contains($reminder)) {
-            $this->reminders[] = $reminder;
-            $reminder->setGoal($this);
-        }
-
-        return $this;
-    }
-
-    public function removeReminder(GoalReminder $reminder): self
-    {
-        if ($this->reminders->removeElement($reminder)) {
-            // set the owning side to null (unless already changed)
-            if ($reminder->getGoal() === $this) {
-                $reminder->setGoal(null);
             }
         }
 
