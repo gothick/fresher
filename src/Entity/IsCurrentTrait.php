@@ -12,7 +12,8 @@ trait IsCurrentTrait
     public function isCurrent()
     {
         if ($this->getStartDate() === null || $this->getEndDate() === null) {
-            return null;
+            // Things without dates are perpetually current
+            return true;
         }
         $now = CarbonImmutable::now();
         if ($now >= $this->getStartDate() &&
@@ -49,5 +50,4 @@ trait IsCurrentTrait
         }
         return false;
     }
-
 }

@@ -13,7 +13,9 @@ use Carbon\CarbonTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Log\LoggerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 
 class ReminderService
@@ -141,22 +143,24 @@ class ReminderService
         if ($user === null) {
             throw new Exception('No user found.');
         }
-        $email = $user->getEmail();
-        if ($email === null) {
+        if ($user->getEmail() === null) {
             throw new Exception('Expected every user to have an email address.');
         }
         $themeName = $theme->getName();
-        $this->logger->info("If I were a real emailer, I'd be sending off an email to {$email} about {$themeName}");
-        $email = (new Email())
-            ->from('noreply@fresher.gothick.org.uk')
-            ->to($email)
+        $name = is_null($user->getDisplayName()) ? '' : $user->getDisplayName();
+
+        $this->logger->info("Sending email to {$user->getEmail()} about theme {$theme->getId()}");
+        $email = (new TemplatedEmail())
+            // Our From address is globally configured in the mailer config.
+            // ->from('noreply@fresher.gothick.org.uk')
+            ->to(new Address($user->getEmail(), $name))
             //->cc('cc@example.com')
             //->bcc('bcc@example.com')
             //->replyTo('fabien@example.com')
             //->priority(Email::PRIORITY_HIGH)
             ->subject('Time for Symfony Mailer!')
-            ->text('Sending emails is fun again!')
-            ->html('<p>See Twig integration for better HTML integration!</p>');
+            ->htmlTemplate('email/theme_reminder.html.twig')
+            ->context(['theme' => $theme]);
         $this->mailer->send($email);
     }
 }
