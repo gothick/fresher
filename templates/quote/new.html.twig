@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fresher Admin - Add Motivational Quote{% endblock %}
+
+{% block body %}
+<div class="container">
+    {{ include('partials/_alert.html.twig') }}
+    <h1>Add New Motivational Quote</h1>
+    {{ form(form) }}
+</div>
+{% endblock %}
