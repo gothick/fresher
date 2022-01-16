@@ -1,47 +1,76 @@
 {% apply inline_css %}
-<style>
-    {# TODO: use inline styles? https://symfony.com/doc/current/mailer.html#using-external-css-files #}
-    * {
-        font-family: sans-serif;
-    }
-    p, li {
-        font-size: 17px;
-    }
-    h1 {
-        font-size: 24px;
-    }
-    h2 {
-        font-size: 22px;
-    }
-    h3 {
-        font-size: 20px;
-    }
-</style>
-<h1>Theme Reminder</h1>
-<p>Hi! This is the reminder for your theme <em>{{ theme.name }}</em> from
-    <a href="{{ url('welcome') }}">Fresher</a>!</p>
-<h2>Current Goals</h2>
-{% for goal in theme.goals | filter(g => g.isCurrent) %}
-    <h3>{{ goal.name }}</h3>
-    {{ goal.description | striptags | markdown }}
-    {% if goal.actions | length > 0 %}
-        <p>Here's something you could do right now:</p>
-        <ul><li><strong>{{ random(goal.actions).description }}</strong></li></ul>
-    {% endif %}
-{% endfor %}
-{% if theme.description is not empty %}
-<h2>Theme Motivation</h2>
-{{ theme.description | striptags | markdown }}
-{% endif %}
-<hr />
-{% if quote is null %}
-<p>As always, good luck with your theme and goals!</p>
-{% else %}
-<blockquote>
-    <p>
-        “{{ quote.quote | striptags | markdown_inline }}”<br />
-        <div style="margin-left: 36px"> — {{ quote.attribution | striptags | markdown_inline }}</div>
-    </p>
-</blockquote>
-{% endif %}
-{% endapply %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Fresher Admin - Theme Reminder Preview{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+        <style>
+            body {
+                background-color: #107896;
+                color: #fefefe;
+                font-family: sans-serif;
+                margin: 0;
+                padding-bottom: 20px;
+            }
+            .header {
+                background-color: #781096;
+                padding: 32px;
+            }
+            .main {
+                padding: 0px 32px;
+            }
+            a:link,
+            a:visited,
+            a:hover,
+            a:active {
+                color: #fefefe;
+            }
+            p, li {
+                font-size: 17px;
+            }
+            h1 {
+                font-size: 34px;
+            }
+            h2 {
+                font-size: 28px;
+            }
+            h3 {
+                font-size: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <h1>Theme Reminder</h1>
+            <p>Hi! This is the reminder for your theme <em>{{ theme.name }}</em> from
+                <a href="{{ url('welcome') }}">Fresher</a>!</p>
+            </div>
+        <div class="main">
+            <h2>Current Goals</h2>
+            {% for goal in theme.goals | filter(g => g.isCurrent) %}
+                <h3>{{ goal.name }}</h3>
+                {{ goal.description | striptags | markdown }}
+                {% if goal.actions | length > 0 %}
+                    <p>Here's something you could do right now:</p>
+                    <ul><li><strong>{{ random(goal.actions).description }}</strong></li></ul>
+                {% endif %}
+                <hr/>
+            {% endfor %}
+            {% if theme.description is not empty %}
+            <h2>Theme Motivation</h2>
+            {{ theme.description | striptags | markdown }}
+            {% endif %}
+            <hr />
+            {% if quote is null %}
+            <p>As always, good luck with your theme and goals!</p>
+            {% else %}
+            <div style="margin-top: 12px; margin-left: 12px; margin-bottom: 4px;">
+                “{{ quote.quote | striptags | markdown_inline }}”
+                <div style="margin-left: 36px; margin-top: 4px;"> — {{ quote.attribution | striptags | markdown_inline }}</div>
+            </div>
+            {% endif %}
+            {% endapply %}
+        </div>
+    </body>
+</html>

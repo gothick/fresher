@@ -27,6 +27,7 @@
                 {% endif %}
                 {% if is_granted('ROLE_ADMIN') %}
                 <a class="nav-item nav-link" href="{{ path('admin_quote') }}">Quotes</a>
+                <a class="nav-item nav-link" href="{{ path('admin_testing') }}">Test Area</a>
                 <a class="nav-item nav-link" href="{{ path('settings_index') }}">Site Settings</a>
                 {% endif %}
             </div>

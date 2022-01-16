@@ -1,20 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello TestingController!{% endblock %}
+{% block title %}Test Area{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
+    <h1>Admin Test Area</h1>
+    <h2>Theme Reminder Email Preview</h2>
     <ul>
-        <li>Your controller at <code><a href="{{ '/Users/matt/Sites/mysites/fresher/src/Controller/TestingController.php'|file_link(0) }}">src/Controller/TestingController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/Users/matt/Sites/mysites/fresher/templates/testing/index.html.twig'|file_link(0) }}">templates/testing/index.html.twig</a></code></li>
+    {% for theme in themes %}
+        <li><a href="{{ path('admin_testing_theme_reminder', {theme: theme.id}) }}">{{ theme.name }}</a></li>
+    {% else %}
+        <li>(No themes found)</li>
+    {% endfor %}
     </ul>
 </div>
 {% endblock %}
