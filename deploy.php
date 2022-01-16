@@ -42,6 +42,12 @@ task('build', function () {
     run('npm run build');
 });
 
+task('emailtest', function () {
+    // cd('{{current_path}}');
+    run('{{bin/console}} app:reminders:addtestjob');
+    run('{{bin/console}} app:reminders:send');
+});
+
 after('deploy:failed', 'deploy:unlock');
 
 // Migrate just before we symlink the new release
