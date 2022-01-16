@@ -30,7 +30,7 @@ class QuoteController extends AbstractController
         $pagination = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
-            3 /* Quotes per page */
+            10 /* Quotes per page */
         );
 
         return $this->render('quote/index.html.twig', [
