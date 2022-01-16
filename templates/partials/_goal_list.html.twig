@@ -18,6 +18,14 @@
                 {{ goal.isInPast ? "<em>(Past goal)</em>" }}
                 {{ goal.isInFuture ? "<em>(Future goal)</em>" }}
             </div>
+            <div class="row my-2">
+                {# <div class="col-1">
+                    {{ include('partials/_progress_percentage.html.twig', { progress: goal.progress }) }}
+                </div> #}
+                <div class="col-2 align-self-center">
+                    {{ include('partials/_bargraph.html.twig', { progress: goal.progress }) }}
+                </div>
+            </div>
             <div class="description">
                 {{ goal.description | striptags | markdown }}
             </div>
