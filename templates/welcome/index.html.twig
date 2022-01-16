@@ -3,7 +3,6 @@
 {% block title %}Welcome to Fresher!{% endblock %}
 
 {% block body %}
-<div class="container">
     <h1>Welcome to <em>Fresher</em></h1>
     <p>Fresher helps take your journey in the right direction by reminding you what's important to <em>you</em>.
     {% if settings.areNewUsersAllowed %}
@@ -11,7 +10,5 @@
     {% else %}
         <p>Sorry, we're not allowing new registrations at this time.</p>
     {% endif %}
-
     <p><strong>Old hand?</strong> <a href="{{ path('dashboard') }}">Go to your Home screen</a>.</p>
-</div>
 {% endblock %}

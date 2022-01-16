@@ -3,11 +3,8 @@
 {% block title %}Hello GoalController!{% endblock %}
 
 {% block body %}
-<div class="container">
     {{ include('partials/_alert.html.twig') }}
 
     <h1>Goals for Theme: {{ theme.name }}</h1>
     {{ include('partials/_goal_list.html.twig') }}
-
-</div>
 {% endblock %}

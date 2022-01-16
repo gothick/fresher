@@ -1,11 +1,9 @@
 {% extends 'base.html.twig' %}
 {% block title %}Fresher - Actions{% endblock %}
 {% block body %}
-<div class="container">
     {{ include('partials/_alert.html.twig') }}
     <h1>Actions for Goal: <em><a href="{{ path('goal_show', { 'theme': theme.id, 'goal': goal.id }) }}">{{ goal.name }}</a></em></h1>
     <div class="subtitle">(Part of Theme: {{ theme.name }})</div>
     {{ include('partials/_action_list.html.twig') }}
     <a href="{{ path('action_new', {'theme': theme.id, 'goal': goal.id }) }}">Add action</a>
-</div>
 {% endblock %}

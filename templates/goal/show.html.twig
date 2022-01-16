@@ -2,7 +2,6 @@
 {% block title %}Fresher - Goal{% endblock %}
 
 {% block body %}
-<div class="container">
     {{ include('partials/_alert.html.twig') }}
     <h1>Goal: {{ goal.name }} </h1>
     <div class="row">
@@ -46,5 +45,4 @@
     </div>
     <hr/>
     <a href="{{ path('goal_edit', { 'theme': theme.id, 'goal': goal.id }) }}" class="btn btn-secondary mt-2">Edit Goal</a>
-</div>
 {% endblock %}

@@ -2,7 +2,6 @@
 {% block title %}Fresher - Action{% endblock %}
 
 {% block body %}
-<div class="container">
     {{ include('partials/_alert.html.twig') }}
     <h1>Viewing action for goal: <a href="{{ path('goal_show', { 'theme': theme.id, 'goal': goal.id }) }}">{{ goal.name }}</a></h1>
     <ul><li>{{ action.description }}</li></ul>
@@ -26,5 +25,4 @@
             <button type="submit" name="btn_delete" class="btn btn-danger"><i class="fas fa-trash-alt" aria-hidden="true"></i> Delete Action</button>
         </form>
     </div>
-</div>
 {% endblock %}

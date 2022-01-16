@@ -7,13 +7,9 @@
     {{ parent() }}
     {{ encore_entry_script_tags('goal_edit') }}
 {% endblock %}
-
 {% block title %}Fresher - Edit Goal{% endblock %}
-
 {% block body %}
-<div class="container">
     <h1>Edit Goal <em>{{ goal.name }}</em></h1>
     <p>Goal is part of theme <strong>{{ theme.name }}</strong></p>
     {{ form(form) }}
-</div>
 {% endblock %}
