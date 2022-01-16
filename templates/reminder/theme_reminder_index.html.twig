@@ -3,9 +3,7 @@
 {% block title %}Fresher - Theme Reminders{% endblock %}
 
 {% block body %}
-<div class="container">
     <h1>Reminders for Theme: <em>{{ theme.name }}</em></h1>
     {{ include('partials/_theme_reminder_list.html.twig') }}
     <a class="ms-3" href="{{ path('theme_reminder_new', { 'theme': theme.id }) }}">Add a reminder</a>
-</div>
 {% endblock %}

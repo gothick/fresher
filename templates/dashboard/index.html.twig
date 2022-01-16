@@ -3,11 +3,9 @@
 {% block title %}Fresher - Dashboard{% endblock %}
 
 {% block body %}
-<div class="container">
     {{ include('partials/_alert.html.twig') }}
     <h1>Dashboard</h1>
     <h2>Themes</h2>
     {{ include('partials/_theme_list.html.twig', { no_themes_message: "You haven't created any themes yet" }) }}
     <a href="{{ path('theme_new') }}" class="btn btn-primary">Add a theme.</a>
-</div>
 {% endblock %}

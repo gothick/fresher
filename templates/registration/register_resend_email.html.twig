@@ -2,12 +2,10 @@
 {% block title %}Fresher - Email Registration Link Expired{% endblock %}
 
 {% block body %}
-<div class="container">
     {{ include('partials/_alert.html.twig') }}
     <h1>Email Registration Link Failed</h1>
     <p>Sorry, your account wasn't registered. It's possible that your registration
     link has expired. Would you like us to send you another one? (Don't forget to
     check your spam folder!)</p>
     {{ form(form) }}
-</div>
 {% endblock %}

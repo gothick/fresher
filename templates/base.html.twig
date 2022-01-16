@@ -15,6 +15,9 @@
     </head>
     <body class="env-{{ app.environment }}">
         {{ include('partials/_navbar.html.twig') }}
-        {% block body %}{% endblock %}
+        <div class="container-xl body-container">
+        {% block body %}
+        {% endblock %}
+        </div>
     </body>
 </html>

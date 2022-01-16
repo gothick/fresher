@@ -3,10 +3,8 @@
 {% block title %}Fresher - Themes{% endblock %}
 
 {% block body %}
-<div class="container theme_index">
     {{ include('partials/_alert.html.twig') }}
     <h1>Themes</h1>
     {{ include('partials/_theme_list.html.twig') }}
     <a href="{{ path('theme_new') }}" class="btn btn-primary">Add a theme.</a>
-</div>
 {% endblock %}

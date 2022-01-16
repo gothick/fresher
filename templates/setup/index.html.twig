@@ -3,12 +3,13 @@
 {% block title %}Hello SetupController!{% endblock %}
 
 {% block body %}
-<div class="container">
     <h1>Set Up Fresher</h1>
     <p>We just need to do a little first-time setup. Please enter the email address
     and a password to use for the site administrator.</p>
     {{ form_start(registrationForm) }}
         {{ form_row(registrationForm.email) }}
+        {{ form_row(registrationForm.displayName) }}
+        {{ form_row(registrationForm.timezone) }}
         {{ form_row(registrationForm.plainPassword, {
             label: 'Password'
         }) }}
@@ -16,5 +17,4 @@
 
         <button type="submit" class="btn btn-primary">Register</button>
     {{ form_end(registrationForm) }}
-</div>
 {% endblock %}
