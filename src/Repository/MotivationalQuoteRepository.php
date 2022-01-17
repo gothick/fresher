@@ -29,6 +29,8 @@ class MotivationalQuoteRepository extends ServiceEntityRepository
      */
     public function getRandomQuote()
     {
+        // TODO: Can probably use a Doctrine extenion to make this even more
+        // cross-platform with less code; see https://stackoverflow.com/a/40959512/300836
         $platform = $this->getEntityManager()->getConnection()->getDatabasePlatform();
 
         if ($platform instanceof PostgreSQLPlatform) {

@@ -28,6 +28,9 @@ class ThemeReminderType extends AbstractType
     {
         $builder
             ->add('enabled')
+            ->add('reminderType', ChoiceType::class, [
+                'choices' => $this->reminderService->getNotificationTypes()
+            ])
             ->add('daySchedule', ChoiceType::class, [
                 'choices' => $this->reminderService->getDayScheduleChoices()
             ])

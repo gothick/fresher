@@ -23,9 +23,6 @@ class RemindersAddTestJob extends Command
     /** @var UserRepository */
     private $userRepository;
 
-    /** @var ReminderService */
-    private $reminderService;
-
     /** @var LoggerInterface */
     private $logger;
 
@@ -34,12 +31,10 @@ class RemindersAddTestJob extends Command
 
     public function __construct(
         UserRepository $userRepository,
-        ReminderService $reminderService,
         LoggerInterface $logger,
         EntityManagerInterface $entityManager
     ) {
         $this->userRepository = $userRepository;
-        $this->reminderService = $reminderService;
         $this->logger = $logger;
         $this->entityManager = $entityManager;
 
@@ -58,19 +53,32 @@ class RemindersAddTestJob extends Command
         $this->logger->info('Got user: ' . $user->getEmail());
         $theme = $user->getThemes()->first();
         if ($theme !== false) {
-            $reminder = $theme->getReminders()->first();
-            if ($reminder !== false) {
-                $reminderJob = new ThemeReminderJob();
-                $scheduleTime = CarbonImmutable::now()->addDays(-1);
-                $reminderJob->setScheduledAt($scheduleTime);
-                $reminder->addReminderJob($reminderJob);
-                $this->entityManager->persist($reminderJob);
-                $this->entityManager->flush();
-                $output->writeln("Scheduled test job for user {$user->getEmail()}, theme {$theme->getName()} for {$scheduleTime->toCookieString()}");
-                return Command::SUCCESS;
-            }
+            $this->addEmailJob($theme, 'email', $output);
+            $this->addEmailJob($theme, 'notification', $output);
+        } else {
+            $output->writeln('Failed to find a theme.');
         }
-        $output->writeln('Failed to find either Matt, a theme or a reminder.');
-        return Command::FAILURE;
+        return Command::SUCCESS;
+    }
+    private function addEmailJob(Theme $theme, string $type, OutputInterface $output): bool
+    {
+        $reminder = $theme
+            ->getReminders()
+            ->filter(fn ($r) => $r->getReminderType() === $type)
+            ->first();
+
+        if ($reminder !== false) {
+            $reminderJob = new ThemeReminderJob();
+            $scheduleTime = CarbonImmutable::now()->addDays(-1);
+            $reminderJob->setScheduledAt($scheduleTime);
+            $reminder->addReminderJob($reminderJob);
+            $this->entityManager->persist($reminderJob);
+            $this->entityManager->flush();
+            $output->writeln("Scheduled {$type} test job for theme {$theme->getName()} for {$scheduleTime->toCookieString()}");
+            return true;
+        } else {
+            $output->writeln("Failed to find reminder (type {$type}).");
+        }
+        return false;
     }
 }

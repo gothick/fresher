@@ -196,6 +196,29 @@ class Theme
         return $this->reminders;
     }
 
+    /**
+     * @return Collection|ThemeReminder[]
+     */
+    public function getEmailReminders(): Collection
+    {
+        return $this
+            ->reminders
+            ->filter(function($reminder) {
+                return $reminder->getReminderType() === 'email';
+            });
+    }
+    /**
+     * @return Collection|ThemeReminder[]
+     */
+    public function getNotificationReminders(): Collection
+    {
+        return $this
+            ->reminders
+            ->filter(function($reminder) {
+                return $reminder->getReminderType() === 'notification';
+            });
+    }
+
     public function addReminder(ThemeReminder $reminder): self
     {
         if (!$this->reminders->contains($reminder)) {

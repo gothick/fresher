@@ -18,6 +18,9 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Notifier\Notification\Notification;
+use Symfony\Component\Notifier\NotifierInterface;
+use Symfony\Component\Notifier\Recipient\Recipient;
 
 class ReminderService
 {
@@ -41,10 +44,20 @@ class ReminderService
      */
     private $quoteRepository;
 
+    /**
+     * @var NotifierInterface
+     */
+    private $notifier;
+
     /** @var string */
     private $adminEmailAddress;
+
     /** @var string */
     private $adminEmailName;
+
+    // TODO: Take this back out once we have configurable SMS numbers
+    /** @var string */
+    private $testSmsRecipientNo;
 
     public function __construct(
         LoggerInterface $logger,
@@ -52,7 +65,9 @@ class ReminderService
         MailerInterface $mailer,
         string $adminEmailAddress,
         string $adminEmailName,
-        MotivationalQuoteRepository $quoteRepository
+        MotivationalQuoteRepository $quoteRepository,
+        NotifierInterface $notifier,
+        $testSmsRecipientNo
     ) {
         $this->logger = $logger;
         $this->entityManager = $entityManager;
@@ -60,12 +75,19 @@ class ReminderService
         $this->adminEmailAddress = $adminEmailAddress;
         $this->adminEmailName = $adminEmailName;
         $this->quoteRepository = $quoteRepository;
+        $this->notifier = $notifier;
+        $this->testSmsRecipientNo = $testSmsRecipientNo;
     }
 
     const DAY_SCHEDULE = [
         'everyday' => 'Every Day',
         'weekdays' => 'Every Weekday',
         'weekends' => 'Weekend Days'
+    ];
+
+    const NOTIFICATION_TYPES = [
+        'email' => 'Email',
+        'notification' => 'Notification to Discord Channel (experimental)'
     ];
 
     /**
@@ -75,6 +97,11 @@ class ReminderService
     {
         // For ChoiceType we want the decoded version as the key
         return array_flip(self::DAY_SCHEDULE);
+    }
+
+    public function getNotificationTypes()
+    {
+        return array_flip(self::NOTIFICATION_TYPES);
     }
 
     public function getFriendlyDaySchedule(string $schedule): string
@@ -164,14 +191,24 @@ class ReminderService
                         $this->entityManager->flush();
                         // TODO: This should use Messenger, not hang around waiting.
                         if ($reminder->getEnabled()) {
-                            $this->sendReminderForTheme($theme);
+                            // TODO: Polymorphism, separation of concerns, etc.
+                            switch ($reminder->getReminderType()) {
+                                case 'email':
+                                    $this->sendEmailReminderForTheme($theme);
+                                    break;
+                                case 'notification':
+                                    $this->sendNotificationReminderForTheme($theme);
+                                    break;
+                                default:
+                                    throw new Exception('Unexpected reminder type: ' . $reminder->getReminderType());
+                            }
                         }
                     }
                 }
             }
         }
     }
-    private function sendReminderForTheme(Theme $theme): void
+    private function sendEmailReminderForTheme(Theme $theme): void
     {
         $user = $theme->getOwner();
         if ($user === null) {
@@ -200,5 +237,25 @@ class ReminderService
                 'quote' => $quote
             ]);
         $this->mailer->send($email);
+    }
+
+    private function sendNotificationReminderForTheme(Theme $theme): void
+    {
+        $user = $theme->getOwner();
+        if ($user === null) {
+            throw new Exception('No user found.');
+        }
+        if ($user->getEmail() === null) {
+            throw new Exception('Expected every user to have an email address.');
+        }
+        $themeName = $theme->getName();
+
+        $notification = (new Notification("Theme Reminder for {$theme->getName()}", ['sms']))
+            ->content("This is a test reminder. There's no content yet. There may be in the future.");
+
+        $this->logger->info("Sending notification to {$user->getEmail()} about theme {$theme->getId()}");
+
+        $recipient = new Recipient($user->getEmail(), $this->testSmsRecipientNo);
+        $this->notifier->send($notification, $recipient);
     }
 }

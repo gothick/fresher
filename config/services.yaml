@@ -9,6 +9,7 @@ parameters:
 
     app.admin_email_address: '%env(ADMIN_EMAIL_ADDRESS)%'
     app.admin_email_name: '%env(ADMIN_EMAIL_NAME)%'
+    app.test_sms_recipient_no: '%env(TEST_SMS_RECIPIENT_NO)%'
 
 services:
     # default configuration for services in *this* file
@@ -19,6 +20,7 @@ services:
         bind:
             $adminEmailAddress: '%app.admin_email_address%'
             $adminEmailName: '%app.admin_email_name%'
+            $testSmsRecipientNo: '%app.test_sms_recipient_no%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
