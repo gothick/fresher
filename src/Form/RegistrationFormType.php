@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -33,6 +34,10 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('timezone', TimezoneType::class)
             ->add('displayName', TextType::class, [
+                'required' => false
+            ])
+            ->add('phoneNumberSMS', TelType::class, [
+                'label' => 'Phone number (for SMS notifications)',
                 'required' => false
             ])
             ->add('plainPassword', PasswordType::class, [

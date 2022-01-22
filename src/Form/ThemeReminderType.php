@@ -28,9 +28,6 @@ class ThemeReminderType extends AbstractType
     {
         $builder
             ->add('enabled')
-            ->add('reminderType', ChoiceType::class, [
-                'choices' => $this->reminderService->getNotificationTypes()
-            ])
             ->add('daySchedule', ChoiceType::class, [
                 'choices' => $this->reminderService->getDayScheduleChoices()
             ])
@@ -46,7 +43,8 @@ class ThemeReminderType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => ThemeReminder::class,
-            'submit_label' => 'Create'
+            'submit_label' => 'Create',
+            'allow_phone' => false
         ]);
     }
 }

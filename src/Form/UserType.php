@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimezoneType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,6 +18,10 @@ class UserType extends AbstractType
         $builder
             ->add('displayName', TextType::class)
             ->add('timezone', TimezoneType::class)
+            ->add('phoneNumberSMS', TelType::class, [
+                'label' => 'Phone number for SMS notifications',
+                'required' => false
+            ])
             ->add('save', SubmitType::class);
     }
 

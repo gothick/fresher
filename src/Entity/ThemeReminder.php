@@ -10,13 +10,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ThemeReminderRepository::class)
+ * @ORM\InheritanceType("SINGLE_TABLE")
  */
-class ThemeReminder
+abstract class ThemeReminder
 {
     public function __construct()
     {
         $this->enabled = true;
-        $this->reminderType = 'email';
         $this->reminderJobs = new ArrayCollection();
     }
     /**
@@ -59,15 +59,16 @@ class ThemeReminder
     private $daySchedule;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false)
-     * @Assert\NotBlank
-     * @Assert\Choice(
-     *     choices = {"email", "notification"},
-     *     message = "Choose a valid day schedule."
-     * )
+     * @param array<string> $availableMethods
+     * @return bool
+     *
      */
-    private $reminderType;
+    public static abstract function isAvailableFor(array $availableMethods);
 
+    /**
+     *
+     */
+    public abstract function getReminderType(): string;
 
     public function getTheme(): ?Theme
     {
@@ -147,18 +148,6 @@ class ThemeReminder
     public function setDaySchedule(string $daySchedule): self
     {
         $this->daySchedule = $daySchedule;
-
-        return $this;
-    }
-
-    public function getReminderType(): ?string
-    {
-        return $this->reminderType;
-    }
-
-    public function setReminderType(?string $reminderType): self
-    {
-        $this->reminderType = $reminderType;
 
         return $this;
     }

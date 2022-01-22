@@ -4,9 +4,12 @@ namespace App\Service;
 
 use App\Entity\Reminder;
 use App\Entity\Theme;
+use App\Entity\ThemeEmailReminder;
 use App\Entity\ThemeReminder;
 use App\Entity\ThemeReminderJob;
+use App\Entity\ThemeSmsReminder;
 use App\Entity\User;
+use App\Form\ThemeReminderType;
 use App\Repository\MotivationalQuoteRepository;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
@@ -85,9 +88,16 @@ class ReminderService
         'weekends' => 'Weekend Days'
     ];
 
-    const NOTIFICATION_TYPES = [
-        'email' => 'Email',
-        'notification' => 'Notification to Discord Channel (experimental)'
+    // TODO: Does this need to be public?
+    public const REMINDER_TYPES = [
+        'email' => [
+            'name' => 'Email Reminder',
+            'class' => ThemeEmailReminder::class
+        ],
+        'sms' => [
+            'name' => 'Phone SMS Reminder',
+            'class' => ThemeSmsReminder::class
+        ]
     ];
 
     /**
@@ -97,11 +107,6 @@ class ReminderService
     {
         // For ChoiceType we want the decoded version as the key
         return array_flip(self::DAY_SCHEDULE);
-    }
-
-    public function getNotificationTypes()
-    {
-        return array_flip(self::NOTIFICATION_TYPES);
     }
 
     public function getFriendlyDaySchedule(string $schedule): string
@@ -121,6 +126,18 @@ class ReminderService
         foreach ($theme->getReminders() as $reminder) {
             $this->createThemeReminderJobs($theme, $reminder);
         }
+    }
+
+    public function getAvailableReminderTypesForUser(User $user)
+    {
+        $availableMethods = [];
+        if ($user->getPhoneNumberSMS() !== null) {
+            $availableMethods[] = 'sms';
+        }
+        if ($user->getEmail() !== null) {
+            $availableMethods[] = 'email';
+        }
+        return array_filter(self::REMINDER_TYPES, fn ($type) => ($type['class'])::isAvailableFor($availableMethods));
     }
 
     private function createThemeReminderJobs(Theme $theme, ThemeReminder $reminder): void

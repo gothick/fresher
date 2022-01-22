@@ -67,6 +67,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $timezone;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $phoneNumberSMS;
+
     public function __construct()
     {
         $this->themes = new ArrayCollection();
@@ -225,5 +230,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->timezone = $timezone;
 
         return $this;
+    }
+
+    public function getPhoneNumberSMS(): ?string
+    {
+        return $this->phoneNumberSMS;
+    }
+
+    public function setPhoneNumberSMS(?string $phoneNumberSMS): self
+    {
+        $this->phoneNumberSMS = $phoneNumberSMS;
+
+        return $this;
+    }
+    public function canReceiveSMS(): bool
+    {
+        // TODO: We'll need a number validation flow later.
+        return !empty($this->phoneNumberSMS);
     }
 }
