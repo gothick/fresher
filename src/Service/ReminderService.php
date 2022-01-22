@@ -62,6 +62,9 @@ class ReminderService
     /** @var string */
     private $testSmsRecipientNo;
 
+    /** @var ThemeReminderSenderFactory */
+    private $reminderSenderFactory;
+
     public function __construct(
         LoggerInterface $logger,
         EntityManagerInterface $entityManager,
@@ -70,7 +73,8 @@ class ReminderService
         string $adminEmailName,
         MotivationalQuoteRepository $quoteRepository,
         NotifierInterface $notifier,
-        $testSmsRecipientNo
+        $testSmsRecipientNo,
+        ThemeReminderSenderFactory $reminderSenderFactory
     ) {
         $this->logger = $logger;
         $this->entityManager = $entityManager;
@@ -80,6 +84,7 @@ class ReminderService
         $this->quoteRepository = $quoteRepository;
         $this->notifier = $notifier;
         $this->testSmsRecipientNo = $testSmsRecipientNo;
+        $this->reminderSenderFactory = $reminderSenderFactory;
     }
 
     const DAY_SCHEDULE = [
@@ -208,6 +213,7 @@ class ReminderService
                         $this->entityManager->flush();
                         // TODO: This should use Messenger, not hang around waiting.
                         if ($reminder->getEnabled()) {
+                            $sender = $this->reminderSenderFactory::getReminderSender($theme, get_class($reminder));
                             // TODO: Polymorphism, separation of concerns, etc.
                             switch ($reminder->getReminderType()) {
                                 case 'email':
