@@ -166,6 +166,14 @@ class Theme
         return $this->goals;
     }
 
+    /**
+     * @return Collection<int, Goal>
+     */
+    public function getCurrentGoals(): Collection
+    {
+        return $this->goals->filter(fn ($g) => $g->isCurrent());
+    }
+
     public function addGoal(Goal $goal): self
     {
         if (!$this->goals->contains($goal)) {
@@ -174,6 +182,21 @@ class Theme
         }
 
         return $this;
+    }
+
+    /**
+     * @return Action|null
+     */
+    public function getRandomGoalAction(): ?Action
+    {
+        $actions = [];
+        foreach ($this->getCurrentGoals() as $goal) {
+            $actions = array_merge($actions, $goal->getActions()->toArray());
+        }
+        if (count($actions) == 0) {
+            return null;
+        }
+        return $actions[array_rand($actions)];
     }
 
     public function removeGoal(Goal $goal): self

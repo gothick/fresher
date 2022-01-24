@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Theme;
 use App\Entity\User;
 use App\Form\ThemeType;
+use App\Service\ReminderSenderService;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,10 +71,16 @@ class ThemeController extends BaseController
      * @IsGranted("access", subject="theme")
      */
     public function show(
-        Theme $theme
+        Theme $theme,
+        ReminderSenderService $reminderSenderService
     ): Response {
+        /** @var User $user */
+        $user = $this->getUser();
+        $reminderTypes = $reminderSenderService->getAvailableReminderTypesForUser($user);
+
         return $this->render('theme/show.html.twig', [
-            'theme' => $theme
+            'theme' => $theme,
+            'reminder_types' => $reminderTypes
         ]);
     }
     /**
