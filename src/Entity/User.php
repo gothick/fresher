@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -66,6 +67,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Assert\NotBlank
      */
     private $timezone;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $phoneNumber;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $verificationCode;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $verificationCodeTries;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    private $verificationCodeExpiresAt;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $phoneNumberVerified;
 
     public function __construct()
     {
@@ -223,6 +249,88 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setTimezone(string $timezone): self
     {
         $this->timezone = $timezone;
+
+        return $this;
+    }
+
+    public function getPhoneNumber(): ?string
+    {
+        return $this->phoneNumber;
+    }
+
+    public function getAnonymisedPhoneNumber(): ?string
+    {
+        if (
+            $this->phoneNumber === null ||
+            empty($this->phoneNumber) ||
+            strlen($this->phoneNumber) <= 5
+        ) {
+            return "*****";
+        }
+        return substr($this->phoneNumber, 0, 3) . '***' . substr($this->phoneNumber, -3);
+    }
+
+    public function setPhoneNumber(?string $phoneNumber): self
+    {
+        if ($phoneNumber !== null) {
+            $phoneNumber = preg_replace('/\s+/', '', $phoneNumber);
+        }
+        $this->phoneNumber = $phoneNumber;
+
+        return $this;
+    }
+
+    public function getVerificationCode(): ?string
+    {
+        return $this->verificationCode;
+    }
+
+    public function setVerificationCode(?string $verificationCode): self
+    {
+        $this->verificationCode = $verificationCode;
+
+        return $this;
+    }
+
+    public function getVerificationCodeTries(): ?int
+    {
+        return $this->verificationCodeTries;
+    }
+
+    public function setVerificationCodeTries(?int $verificationCodeTries): self
+    {
+        $this->verificationCodeTries = $verificationCodeTries;
+
+        return $this;
+    }
+
+    public function getVerificationCodeExpiresAt(): ?\DateTimeImmutable
+    {
+        return $this->verificationCodeExpiresAt;
+    }
+
+    public function setVerificationCodeExpiresAt(?\DateTimeImmutable $verificationCodeExpiresAt): self
+    {
+        $this->verificationCodeExpiresAt = $verificationCodeExpiresAt;
+
+        return $this;
+    }
+
+    public function hasUnexpiredVerificationCode(): bool
+    {
+        return $this->verificationCode !== null &&
+            $this->verificationCodeExpiresAt !== null &&
+            $this->verificationCodeExpiresAt > Carbon::now();
+    }
+
+    public function getPhoneNumberVerified(): ?bool
+    {
+        return $this->phoneNumberVerified;
+    }
+
+    public function setPhoneNumberVerified(?bool $phoneNumberVerified): self
+    {
+        $this->phoneNumberVerified = $phoneNumberVerified;
 
         return $this;
     }

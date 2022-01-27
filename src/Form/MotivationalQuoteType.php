@@ -17,8 +17,7 @@ class MotivationalQuoteType extends AbstractType
             ->add('attribution')
             ->add('create', SubmitType::class, [
                 'label' => $options['submit_label']
-            ]
-        );
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

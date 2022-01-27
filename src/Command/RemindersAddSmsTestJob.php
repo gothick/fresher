@@ -5,6 +5,7 @@ namespace App\Command;
 use App\Entity\Theme;
 use App\Entity\ThemeReminder;
 use App\Entity\ThemeReminderJob;
+use App\Entity\ThemeSmsReminder;
 use App\Repository\UserRepository;
 use App\Service\ReminderService;
 use Psr\Log\LoggerInterface;
@@ -16,9 +17,9 @@ use Carbon\CarbonImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 
-class RemindersAddTestJob extends Command
+class RemindersAddSmsTestJob extends Command
 {
-    protected static $defaultName = 'app:reminders:addtestjob';
+    protected static $defaultName = 'app:reminders:addsmstestjob';
 
     /** @var UserRepository */
     private $userRepository;
@@ -58,7 +59,7 @@ class RemindersAddTestJob extends Command
         $this->logger->info('Got user: ' . $user->getEmail());
         $theme = $user->getThemes()->first();
         if ($theme !== false) {
-            $reminder = $theme->getReminders()->first();
+            $reminder = $theme->getReminders()->filter(fn ($r) => $r instanceof ThemeSmsReminder)->first();
             if ($reminder !== false) {
                 $reminderJob = new ThemeReminderJob();
                 $scheduleTime = CarbonImmutable::now()->addDays(-1);
@@ -70,7 +71,7 @@ class RemindersAddTestJob extends Command
                 return Command::SUCCESS;
             }
         }
-        $output->writeln('Failed to find either Matt, a theme or a reminder.');
+        $output->writeln('Failed to find either Matt, a theme or an SMS reminder.');
         return Command::FAILURE;
     }
 }

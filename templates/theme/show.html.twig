@@ -17,7 +17,9 @@
             <p class="ms-3"><a href="{{ path('goal_new', { 'theme': theme.id }) }}" class="ps-2">Add a goal</a></p>
             <h2 class="mt-4"><a href="{{ path("theme_reminder", { 'theme': theme.id }) }}">Reminders</a></h2>
             {{ include('partials/_theme_reminder_list.html.twig') }}
-            <a class="ms-3" href="{{ path('theme_reminder_new', { 'theme': theme.id }) }}">Add a reminder</a>
+            <div class="ms-3">
+                {{ include('partials/_add_reminder_links.html.twig') }}
+            </div>
             <hr/>
             <a href="{{ path('theme_edit', { 'id': theme.id }) }}" class="btn btn-secondary mt-2">Edit Theme</a>
         </div>

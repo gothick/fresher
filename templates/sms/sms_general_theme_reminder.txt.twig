@@ -1,0 +1,7 @@
+Hi! This is your theme reminder for {{ theme.name }}. Current goals:
+{% for goal in theme.currentGoals %}
+{{ goal.name }} {% if not loop.last %} - {% endif %}
+{% endfor %}
+{% if random_action is not null %}
+// Right now, could you: {{ random_action.description }}?
+{% endif %}

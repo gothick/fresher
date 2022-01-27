@@ -3,7 +3,10 @@ framework:
         #chatter_transports:
         #    slack: '%env(SLACK_DSN)%'
         #    telegram: '%env(TELEGRAM_DSN)%'
-        #texter_transports:
+        texter_transports:
+            # Replaced with fakesms+email in dev, etc. by DSN overrides in .env files
+            sns: '%env(SNS_DSN)%'
+
         #    twilio: '%env(TWILIO_DSN)%'
         #    nexmo: '%env(NEXMO_DSN)%'
         channel_policy:
@@ -13,4 +16,5 @@ framework:
             medium: ['email']
             low: ['email']
         admin_recipients:
-            - { email: admin@example.com }
+            - { email: fresher@gothick.org.uk }
+

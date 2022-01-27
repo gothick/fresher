@@ -10,14 +10,18 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ThemeReminderRepository::class)
+ * @ORM\InheritanceType("SINGLE_TABLE")
  */
-class ThemeReminder
+abstract class ThemeReminder
 {
     public function __construct()
     {
         $this->enabled = true;
         $this->reminderJobs = new ArrayCollection();
     }
+
+    abstract public function getDescription(): string;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fresher - Verify Phone Number{% endblock %}
+
+{% block body %}
+    {{ include('partials/_alert.html.twig') }}
+    <div class="row mt-4">
+        <div class="col mx-3 headerstrip">
+            <div class="row">
+                <div class="col">
+                    <h2>Verify phone number for {{ user.username }}</h2>
+                    {% if user.hasUnexpiredVerificationCode %}
+                    <p>It looks like you've recently been sent a verification code. <a href="{{ path('user_validate_sms_code') }}">Click here to validate your verification code</a>.</p>
+                    <p>Otherwise:</p>
+                    {% endif %}
+                    <p>Click the button to send a validation code to {{ user.phoneNumber }}:</p>
+                    {{ form(form) }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col mx-3">
+            <a href="{{ path('user_index') }}">back to user page</a>
+        </div>
+    </div>
+{% endblock %}

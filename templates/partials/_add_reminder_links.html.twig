@@ -1,0 +1,7 @@
+{% for type, details in reminder_types %}
+    <a
+        class="ms-3"
+        href="{{ path('theme_reminder_' ~ type ~ '_new', { 'theme': theme.id }) }}">
+        Add a new {{ details.description }}
+    </a><br/>
+{% endfor %}

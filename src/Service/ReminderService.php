@@ -1,23 +1,17 @@
 <?php
 
 namespace App\Service;
-
-use App\Entity\Reminder;
 use App\Entity\Theme;
 use App\Entity\ThemeReminder;
 use App\Entity\ThemeReminderJob;
 use App\Entity\User;
-use App\Repository\MotivationalQuoteRepository;
+use App\Service\ReminderSenderService;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonTimeZone;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Log\LoggerInterface;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Address;
-use Symfony\Component\Mime\Email;
 
 class ReminderService
 {
@@ -32,34 +26,18 @@ class ReminderService
     private $entityManager;
 
     /**
-     * @var MailerInterface
+     * @var ReminderSenderService
      */
-    private $mailer;
-
-    /**
-     * @var MotivationalQuoteRepository
-     */
-    private $quoteRepository;
-
-    /** @var string */
-    private $adminEmailAddress;
-    /** @var string */
-    private $adminEmailName;
+    private $reminderSenderService;
 
     public function __construct(
         LoggerInterface $logger,
         EntityManagerInterface $entityManager,
-        MailerInterface $mailer,
-        string $adminEmailAddress,
-        string $adminEmailName,
-        MotivationalQuoteRepository $quoteRepository
+        ReminderSenderService $reminderSenderService
     ) {
         $this->logger = $logger;
         $this->entityManager = $entityManager;
-        $this->mailer = $mailer;
-        $this->adminEmailAddress = $adminEmailAddress;
-        $this->adminEmailName = $adminEmailName;
-        $this->quoteRepository = $quoteRepository;
+        $this->reminderSenderService = $reminderSenderService;
     }
 
     const DAY_SCHEDULE = [
@@ -164,41 +142,11 @@ class ReminderService
                         $this->entityManager->flush();
                         // TODO: This should use Messenger, not hang around waiting.
                         if ($reminder->getEnabled()) {
-                            $this->sendReminderForTheme($theme);
+                            $this->reminderSenderService->sendReminder($reminder);
                         }
                     }
                 }
             }
         }
-    }
-    private function sendReminderForTheme(Theme $theme): void
-    {
-        $user = $theme->getOwner();
-        if ($user === null) {
-            throw new Exception('No user found.');
-        }
-        if ($user->getEmail() === null) {
-            throw new Exception('Expected every user to have an email address.');
-        }
-        $themeName = $theme->getName();
-        $name = is_null($user->getDisplayName()) ? '' : $user->getDisplayName();
-
-        $quote = $this->quoteRepository->getRandomQuote();
-
-        $this->logger->info("Sending email to {$user->getEmail()} about theme {$theme->getId()}");
-        $email = (new TemplatedEmail())
-            ->from(new Address($this->adminEmailAddress, $this->adminEmailName))
-            ->to(new Address($user->getEmail(), $name))
-            //->cc('cc@example.com')
-            //->bcc('bcc@example.com')
-            //->replyTo('fabien@example.com')
-            //->priority(Email::PRIORITY_HIGH)
-            ->subject("Theme Reminder: {$themeName}")
-            ->htmlTemplate('email/theme_reminder.html.twig')
-            ->context([
-                'theme' => $theme,
-                'quote' => $quote
-            ]);
-        $this->mailer->send($email);
     }
 }
