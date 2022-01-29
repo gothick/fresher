@@ -49,6 +49,7 @@ security:
         - { path: ^/user, roles: [ROLE_USER] }
         - { path: ^/dashboard, roles: ROLE_USER }
         - { path: ^/theme, roles: ROLE_USER }
+        - { path: ^/helper, roles: ROLE_USER }
 
     role_hierarchy:
         ROLE_ADMIN: ROLE_USER

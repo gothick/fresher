@@ -1,0 +1,7 @@
+    <ul>
+        {% for helper in helpers %}
+        <li>{{ helper.description }} <a href="{{ path('helper_edit', { id: helper.id } ) }}">[edit]</a></li>
+        {% else %}
+        <li><em>No helpers added yet</em></li>
+        {% endfor %}
+    </ul>

@@ -93,9 +93,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $phoneNumberVerified;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Helper::class, mappedBy="owner", orphanRemoval=true)
+     */
+    private $helpers;
+
     public function __construct()
     {
         $this->themes = new ArrayCollection();
+        $this->helpers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -331,6 +337,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPhoneNumberVerified(?bool $phoneNumberVerified): self
     {
         $this->phoneNumberVerified = $phoneNumberVerified;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Helper[]
+     */
+    public function getHelpers(): Collection
+    {
+        return $this->helpers;
+    }
+
+    public function addHelper(Helper $helper): self
+    {
+        if (!$this->helpers->contains($helper)) {
+            $this->helpers[] = $helper;
+            $helper->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHelper(Helper $helper): self
+    {
+        if ($this->helpers->removeElement($helper)) {
+            // set the owning side to null (unless already changed)
+            if ($helper->getOwner() === $this) {
+                $helper->setOwner(null);
+            }
+        }
 
         return $this;
     }

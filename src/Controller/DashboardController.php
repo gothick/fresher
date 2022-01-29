@@ -23,7 +23,8 @@ class DashboardController extends BaseController
         $themes = $user->getThemes();
 
         return $this->render('dashboard/index.html.twig', [
-            'themes' => $themes
+            'themes' => $themes,
+            'user' => $user
         ]);
     }
 }
