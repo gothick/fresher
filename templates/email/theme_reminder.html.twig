@@ -62,6 +62,14 @@
             {{ theme.description | striptags | markdown }}
             {% endif %}
             <hr />
+            {% if helpers is not empty %}
+            <h2>Everyday Helper Hints</h2>
+            <ul>
+            {% for helper in helpers %}
+                <li>{{ helper.description }}</li>
+            {% endfor %}
+            </ul>
+            {% endif %}
             {% if quote is null %}
             <p>As always, good luck with your theme and goals!</p>
             {% else %}
