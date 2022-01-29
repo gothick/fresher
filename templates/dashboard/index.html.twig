@@ -8,4 +8,12 @@
     <h2>Themes</h2>
     {{ include('partials/_theme_list.html.twig', { no_themes_message: "You haven't created any themes yet" }) }}
     <a href="{{ path('theme_new') }}" class="btn btn-primary">Add a theme.</a>
+    <h2 class="mt-4">Framework</h2>
+    <p>Your framework is whatever helps you with your Themes, Goals, and life in general.</p>
+    <h3>Everyday Helpers</h3>
+    <p>Simple everyday helpers you want to be reminded of. "Take a walk", "Write your morning pages", and so on.
+    Try to keep it pithy: a sentence or two at most. We'll send one or more of these along with every email reminder you
+    set up for your Themes.
+    {{ include('partials/_helper_list.html.twig', { helpers: user.helpers }) }}
+    <a href="{{ path('helper_new') }}">Add a helper</a>
 {% endblock %}
