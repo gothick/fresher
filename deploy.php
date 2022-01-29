@@ -44,7 +44,7 @@ task('build', function () {
 
 task('emailtest', function () {
     // cd('{{current_path}}');
-    run('{{bin/console}} app:reminders:addtestjob');
+    run('{{bin/console}} app:reminders:addemailtestjob');
     run('{{bin/console}} app:reminders:send');
 });
 
