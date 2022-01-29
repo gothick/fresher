@@ -4,11 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Theme;
 use App\Entity\User;
-use App\Repository\MotivationalQuoteRepository;
+use App\Service\ReminderRendererService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\HttpFoundation\Request;
 
 class TestingController extends AbstractController
 {
@@ -32,14 +33,11 @@ class TestingController extends AbstractController
      */
     public function themeReminder(
         Theme $theme,
-        MotivationalQuoteRepository $quoteRepository
+        ReminderRendererService $reminderRenderer,
+        Request $request
     ): Response {
-
-        $quote = $quoteRepository->getRandomQuote();
-
-        return $this->render('testing/theme_reminder.html.twig', [
-            'theme' => $theme,
-            'quote' => $quote
-        ]);
+        $response = new Response($reminderRenderer->renderThemeReminderString($theme));
+        $response->prepare($request);
+        return $response;
     }
 }
