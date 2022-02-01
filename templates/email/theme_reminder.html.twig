@@ -43,13 +43,13 @@
     <body>
         <div class="header">
             <h1>Theme Reminder</h1>
-            <p>Hi! This is the reminder for your theme <em>{{ theme.name }}</em> from
+            <p>Hi! This is the reminder for your theme <em><a href="{{ url('theme_show', {'id': theme.id}) }}">{{ theme.name }}</a></em> from
                 <a href="{{ url('welcome') }}">Fresher</a>!</p>
             </div>
         <div class="main">
             <h2>Current Goals</h2>
             {% for goal in theme.goals | filter(g => g.isCurrent) %}
-                <h3>{{ goal.name }}</h3>
+                <h3><a href="{{ url('goal_show', {'theme': theme.id, 'goal': goal.id} ) }}">{{ goal.name }}</a></h3>
                 {{ goal.description | striptags | markdown }}
                 {% if goal.actions | length > 0 %}
                     <p>Here's something you could do right now:</p>
