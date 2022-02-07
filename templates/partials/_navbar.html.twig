@@ -1,9 +1,20 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
 	<div class="container-fluid">
-		<a class="navbar-brand" href="{{ path('welcome') }}">Fresher</a>
+		<a
+            class="navbar-brand"
+            href="{{ path('welcome') }}">
+                <img
+                    width="50"
+                    height="50"
+                    src="{{ asset('build/images/fresher_logo@2x.png') }}"
+                    srcset="{{ asset('build/images/fresher_logo.png') }} 1x
+                            {{ asset('build/images/fresher_logo@2x.png') }} 2x" />
+        </a>
+
+        <a class="navbar-brand" href="{{ path('welcome') }}">Fresher</a>
         {% if app.environment == 'dev' %}
         <div class="navbar-brand environment">
-            <small>({{ app.environment }} environment)</small>
+            <small>({{ app.environment }})</small>
         </div>
         {% endif %}
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
