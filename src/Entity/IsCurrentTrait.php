@@ -15,7 +15,7 @@ trait IsCurrentTrait
             // Things without dates are perpetually current
             return true;
         }
-        $now = CarbonImmutable::now();
+        $now = CarbonImmutable::now()->startOfDay();
         if ($now >= $this->getStartDate() &&
             $now <= $this->getEndDate()) {
             return true;
@@ -30,7 +30,7 @@ trait IsCurrentTrait
         if ($this->getStartDate() === null || $this->getEndDate() === null) {
             return null;
         }
-        $now = CarbonImmutable::now();
+        $now = CarbonImmutable::now()->startOfDay();
         if ($now > $this->getEndDate()) {
             return true;
         }
@@ -44,7 +44,7 @@ trait IsCurrentTrait
         if ($this->getStartDate() === null || $this->getEndDate() === null) {
             return null;
         }
-        $now = CarbonImmutable::now();
+        $now = CarbonImmutable::now()->startOfDay();
         if ($now < $this->getStartDate()) {
             return true;
         }
